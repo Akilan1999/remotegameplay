@@ -1,0 +1,11 @@
+---
+
+- hosts: all
+
+  tasks:
+    - name: set config for laplace
+      ansible.builtin.script: ./laplace -setconfig
+
+    - name: run laplace
+      ansible.builtin.script: ./laplace -tls -addr 0.0.0.0:8888
+
