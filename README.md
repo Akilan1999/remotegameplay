@@ -7,3 +7,9 @@ a plugin which complements the project [P2PRC](https://p2prc.akilan.io)
 ## Laplace Binary 
 The laplace binary is generated from the fork:
 https://github.com/Akilan1999/laplace/tree/keyboard_mouse
+
+## Running laplace 
+```
+chromium --auto-select-desktop-capture-source=Entire screen --url https://0.0.0.0:8888/?mode=headless
+
+```
