@@ -21,6 +21,9 @@ func main() {
 	keyFile := flag.String("keyFile", "files/server.key", "TLS key file")
 	headless := flag.Bool("headless", false, "Creating screenshare using headless mode")
 	roomInfo := flag.Bool("roomInfo", false, "Getting room id of headless server")
+	killServer := flag.Bool("killServer", false, "Kills the laplace")
+	killChromium := flag.Bool("killChromium", false, "Kills all chromuim")
+
 	flag.Parse()
 
 	// Action performed when the config file is called
@@ -54,6 +57,23 @@ func main() {
 		return
 
 	}
+	// kills laplace server
+	if *killServer {
+		cmd := exec.Command("pkill" ,"laplace")
+		if err := cmd.Run(); err != nil {
+			log.Fatalln(err)
+		}
+		return
+	}
+    // kills chromium server
+	if *killChromium {
+		cmd := exec.Command("pkill" ,"chromium")
+		if err := cmd.Run(); err != nil {
+			log.Fatalln(err)
+		}
+		return
+	}
+
 
 	if *tls {
 		log.Println("Listening on TLS:", *addr)
