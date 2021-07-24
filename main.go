@@ -1,87 +1,82 @@
 package main
 
 import (
-	"bufio"
+	"encoding/json"
+	"flag"
 	"fmt"
-	"os"
+	"laplace/config"
+	"laplace/core"
+	"log"
+	"math/rand"
+	"net/http"
 	"os/exec"
+	"time"
 )
 
 func main() {
-  err := LaplaceConfig()
-  if err != nil {
-  	fmt.Println(err)
-  }
-  _, err = LaplaceServer(23424)
+	addr := flag.String("addr", "0.0.0.0:443", "Listen address")
+	tls := flag.Bool("tls", false, "Use TLS")
+	setconfig := flag.Bool("setconfig", false, "Generates a config file")
+	certFile := flag.String("certFile", "files/server.crt", "TLS cert file")
+	keyFile := flag.String("keyFile", "files/server.key", "TLS key file")
+	headless := flag.Bool("headless", false, "Creating screenshare using headless mode")
+	roomInfo := flag.Bool("roomInfo", false, "Getting room id of headless server")
+	flag.Parse()
+
+	// Action performed when the config file is called
+	if *setconfig {
+		config.SetDefaults()
+		return
+	}
+
+	rand.Seed(time.Now().UnixNano())
+	server := core.GetHttp()
+
+	// Print out room information
+	if *roomInfo {
+		room, err := core.ReadRoomsFile()
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+		PrettyPrint(room)
+		return
+	}
+
+
+	// Running in headless mode
+	if *headless {
+		// Starting screen share headless
+		cmd := exec.Command("chromium" ,"--auto-select-desktop-capture-source=Entire screen","--url","https://" + *addr + "/?mode=headless")
+		if err := cmd.Run(); err != nil {
+			log.Fatalln(err)
+		}
+		return
+
+	}
+
+	if *tls {
+		log.Println("Listening on TLS:", *addr)
+		if err := http.ListenAndServeTLS(*addr, *certFile, *keyFile, server); err != nil {
+			log.Fatalln(err)
+		}
+	} else {
+		log.Println("Listening:", *addr)
+		if err := http.ListenAndServe(*addr, server); err != nil {
+			log.Fatalln(err)
+		}
+	}
+}
+
+// PrettyPrint print the contents of the obj (
+// Reference: https://stackoverflow.com/questions/24512112/how-to-print-struct-variables-in-console
+func PrettyPrint(data interface{}) {
+	var p []byte
+	//    var err := error
+	p, err := json.MarshalIndent(data, "", "\t")
 	if err != nil {
 		fmt.Println(err)
+		return
 	}
-}
-
-// LaplaceConfig Sets up the laplace configuration
-func LaplaceConfig() error {
-	// Setting up environment variable Laplace
-	curDir := os.Getenv("PWD")
-	os.Setenv("LAPLACE", curDir)
-
-	cmd := exec.Command("./laplace","-setconfig")
-
-	// USE THE FOLLOWING TO DEBUG
-	//cmdReader, err := cmd.StdoutPipe()
-	//if err != nil {
-	//	fmt.Fprintln(os.Stderr, "Error creating StdoutPipe for Cmd", err)
-	//	return
-	//}
-	//
-	//// the following is used to print output of the command
-	//// as it makes progress...
-	//scanner := bufio.NewScanner(cmdReader)
-	//go func() {
-	//	for scanner.Scan() {
-	//		fmt.Printf("%s\n", scanner.Text())
-	//		//
-	//		// TODO:
-	//		// send output to server
-	//	}
-	//}()
-	//
-	//if err := cmd.Start(); err != nil {
-	//	return err
-	//}
-
-	if err := cmd.Run(); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-// LaplaceServer Executes the laplace server
-func LaplaceServer(port int)(*exec.Cmd, error) {
-	cmd := exec.Command("./laplace","-tls","-addr","0.0.0.0:" + fmt.Sprint(port))
-
-	// USE THE FOLLOWING TO DEBUG
-	cmdReader, err := cmd.StdoutPipe()
-	if err != nil {
-		fmt.Fprintln(os.Stderr, "Error creating StdoutPipe for Cmd", err)
-		return nil, err
-	}
-
-	// the following is used to print output of the command
-	// as it makes progress...
-	scanner := bufio.NewScanner(cmdReader)
-	go func() {
-		for scanner.Scan() {
-			fmt.Printf("%s\n", scanner.Text())
-			//
-			// TODO:
-			// send output to server
-		}
-	}()
-
-	if err = cmd.Run(); err != nil {
-		return nil, err
-	}
-
-	return cmd, nil
+	fmt.Printf("%s \n", p)
 }

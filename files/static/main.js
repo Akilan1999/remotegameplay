@@ -19,7 +19,7 @@ const displayMediaOptions = {
     v720p30: {
         video: {
             height: 720,
-            frameRate: 30,
+            frameRate: 60,
         },
         audio: true,
     },
@@ -141,6 +141,7 @@ function initUI() {
     LaplaceVar.ui.videoContainer = document.getElementById('video-container');
     LaplaceVar.ui.barrierIP = document.getElementById('barrierIP');
     LaplaceVar.ui.barrierhostname = document.getElementById('hostname');
+    LaplaceVar.headless = { result :"0"};
 
     LaplaceVar.ui.joinForm.onsubmit = async e => {
         e.preventDefault();
@@ -184,8 +185,29 @@ function initUI() {
     LaplaceVar.ui.inputDisplayMediaOption.value = JSON.stringify(preset[defaultPresetValue].displayMediaOption, null, 1);
     LaplaceVar.ui.inputRTPPeerConnectionOption.value = JSON.stringify(preset[defaultPresetValue].rtpPeerConnectionOption, null, 1);
 
+    LaplaceVar.headless.onactivate = () => {
+        LaplaceVar.ui.streamServePageUI.style.display = 'none';
+        const defaultPresetValue = Object.keys(preset)[0];
+        const mediaOption = JSON.parse(LaplaceVar.ui.inputDisplayMediaOption.value);
+        const pcOption = JSON.parse(LaplaceVar.ui.inputRTPPeerConnectionOption.value);
+        return startStream(mediaOption, pcOption);
+    }
+
     //getting server hostname
     getServerHostName()
+
+    // Getting query string from the URL
+    const queryString = window.location.search;
+
+// Getting url parameters from the URL
+    const urlParams = new URLSearchParams(queryString);
+
+    // Running headless mode
+    if(urlParams.get('mode') == "headless") {
+      //  setTimeout(function() {
+        LaplaceVar.ui.btnStartStream.click()
+     //   },2000)
+    }
 
 
     print("Logs:");
@@ -352,8 +374,8 @@ async function startStream(displayMediaOption, pcOption) {
     try {
         // noinspection JSUnresolvedFunction
         LaplaceVar.mediaStream = await navigator.mediaDevices.getDisplayMedia(displayMediaOption);
-    } catch {
-        alert('Streaming from this device is not supported. \n\nGoogle reference: getDisplayMedia');
+    } catch(err) {
+        alert(err);
         leaveRoom()
     }
     LaplaceVar.ui.video.srcObject = LaplaceVar.mediaStream;
@@ -563,3 +585,5 @@ function leaveRoom() {
 
 initUI();
 routeByUrl();
+
+

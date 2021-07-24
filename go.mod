@@ -1,5 +1,8 @@
-module github.com/Akilan1999/remotegameplay
+module laplace
 
 go 1.16
 
-require github.com/mxschmitt/playwright-go v0.1100.0
+require (
+	github.com/gorilla/websocket v1.4.2
+	github.com/spf13/viper v1.8.1
+)
