@@ -8,7 +8,8 @@ a plugin which complements the project [P2PRC](https://p2prc.akilan.io)
 Based on the fork:
 https://github.com/Akilan1999/laplace/tree/keyboard_mouse
 
-## Start webrtc screenshare automatically 
+## Installation instruction 
 ```
-chromium --auto-select-desktop-capture-source Entire screen --url https://0.0.0.0:8888/?mode=headless
+
 ```
+

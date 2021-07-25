@@ -50,7 +50,7 @@ func main() {
 	// Running in headless mode
 	if *headless {
 		// Starting screen share headless
-		cmd := exec.Command("chromium" ,"--auto-select-desktop-capture-source=Entire screen","--url","https://" + *addr + "/?mode=headless")
+		cmd := exec.Command("chromium" ,"--auto-select-desktop-capture-source=Entire screen","--url","https://" + *addr + "/?mode=headless","--ignore-certificate-errors")
 		if err := cmd.Run(); err != nil {
 			log.Fatalln(err)
 		}
