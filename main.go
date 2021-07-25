@@ -49,14 +49,23 @@ func main() {
 
 	// Running in headless mode
 	if *headless {
+		Config, err := config.ConfigInit()
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+		// Returns the URl address type
+		Addr := Ip4or6(Config.IPAddress)
+
 		// Starting screen share headless
-		cmd := exec.Command("chromium" ,"--auto-select-desktop-capture-source=Entire screen","--url","https://" + *addr + "/?mode=headless","--ignore-certificate-errors")
+		cmd := exec.Command("chromium" ,"--auto-select-desktop-capture-source=Entire screen","--url","https://" + Addr + ":8888/?mode=headless","--ignore-certificate-errors")
 		if err := cmd.Run(); err != nil {
 			log.Fatalln(err)
 		}
 		return
 
 	}
+
 	// kills laplace server
 	if *killServer {
 		cmd := exec.Command("pkill" ,"laplace")
@@ -99,4 +108,19 @@ func PrettyPrint(data interface{}) {
 		return
 	}
 	fmt.Printf("%s \n", p)
+}
+
+// Ip4or6 Helper function to check if the IP address is IPV4 or
+//IPV6 (https://socketloop.com/tutorials/golang-check-if-ip-address-is-version-4-or-6)
+func Ip4or6(s string) string {
+	for i := 0; i < len(s); i++ {
+		switch s[i] {
+		case '.':
+			return s
+		case ':':
+			return "[" + s + "]"
+		}
+	}
+	return "[" + s + "]"
+
 }
