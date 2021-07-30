@@ -31,7 +31,7 @@ func (b *Barrier)CreateBarrierSession() error {
 		return err
 	}
 
-	cmd := exec.Command("sudo","-u",configResp.SystemUsername,"barrier.barrierc","-f","--debug", "DEBUG" ,"--log", "/tmp/barrier.log",b.IPAddress)
+	cmd := exec.Command("sudo","-u",configResp.SystemUsername,"barrierc","-f","--debug", "DEBUG" ,"--log", "/tmp/barrier.log",b.IPAddress)
 
 	// USE THE FOLLOWING TO DEBUG
 	//cmdReader, err := cmd.StdoutPipe()
@@ -81,7 +81,7 @@ func (b *Barrier)DeleteBarrierSession() error {
 
 // DetectBarrier This function ensures that the server has barrier client installed
 func DetectBarrier() error {
-	_, err := exec.LookPath("barrier.barrierc")
+	_, err := exec.LookPath("barrierc")
 	if err != nil {
 		return err
 	}
