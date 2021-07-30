@@ -11,7 +11,7 @@
 # from   consol/ubuntu-xfce-vnc
 
 # due to dependency issues vnc is still work in progress
-from ubuntu:20.04
+from dorowu/ubuntu-desktop-lxde-vnc
 
 # Switch to root user to install additional software
 USER 0
@@ -51,6 +51,8 @@ run    chpasswd -c SHA512 < /root/passwdfile && \
 
 # Port 22 is used for ssh
 expose 22
+
+expose
 
 
 # Assign /data as static volume.

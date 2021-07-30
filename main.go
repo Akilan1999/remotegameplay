@@ -57,8 +57,15 @@ func main() {
 		// Returns the URl address type
 		Addr := Ip4or6(Config.IPAddress)
 
+		// If address is provided
+		if *addr != "" {
+			Addr = *addr
+			// Add brackets if the ip address is ipv6
+			Addr = Ip4or6(Addr)
+		}
+
 		// Starting screen share headless
-		cmd := exec.Command("chromium" ,"--auto-select-desktop-capture-source=Entire screen","--url","https://" + Addr + ":8888/?mode=headless","--ignore-certificate-errors")
+		cmd := exec.Command("chromium-browser" ,"--no-sandbox","--auto-select-desktop-capture-source=Entire screen","--url","https://" + Addr + ":8888/?mode=headless","--ignore-certificate-errors")
 		if err := cmd.Run(); err != nil {
 			log.Fatalln(err)
 		}
