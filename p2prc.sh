@@ -16,7 +16,7 @@ apt install -y barrier
 
 # Installing chromium
 wget https://github.com/RobRich999/Chromium_Clang/releases/download/v94.0.4585.0-r904940-linux64-deb-avx/chromium-browser-unstable_94.0.4585.0-1_amd64.deb
-apt install -y ./v94.0.4585.0-r904940-linux64-deb-avx/chromium-browser-unstable_94.0.4585.0-1_amd64.deb
+apt install -y ./chromium-browser-unstable_94.0.4585.0-1_amd64.deb
 
 # clone remotegameplay distribution
 git clone https://github.com/Akilan1999/remotegameplay

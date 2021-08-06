@@ -30,10 +30,6 @@ run    apt-get -q -y update; apt-get -q -y upgrade && \
        apt-get -q -y install sudo openssh-server && \
        mkdir /var/run/sshd
 
-# Installing golang and git
-run    apt install golang && \
-       apt install git
-
 
 # Set root password
 run    echo 'root:password' >> /root/passwdfile
@@ -51,8 +47,6 @@ run    chpasswd -c SHA512 < /root/passwdfile && \
 
 # Port 22 is used for ssh
 expose 22
-
-expose
 
 
 # Assign /data as static volume.

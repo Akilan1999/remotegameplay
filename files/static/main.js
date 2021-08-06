@@ -13,13 +13,16 @@ const iceConfig = {
 
 const displayMediaOptions = {
     noConstraint: {
-        video: true,
+        video: {
+            height: 1080,
+            frameRate: 120,
+        },
         audio: true,
     },
     v720p30: {
         video: {
-            height: 720,
-            frameRate: 60,
+            height: 1080,
+            frameRate: 120,
         },
         audio: true,
     },

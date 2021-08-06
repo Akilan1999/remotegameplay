@@ -23,6 +23,7 @@ func main() {
 	roomInfo := flag.Bool("roomInfo", false, "Getting room id of headless server")
 	killServer := flag.Bool("killServer", false, "Kills the laplace")
 	killChromium := flag.Bool("killChromium", false, "Kills all chromuim")
+	BinaryToExcute := flag.String("BinaryToExecute","","Providing path (i.e Absolute path) of binary to execute")
 
 	flag.Parse()
 
@@ -64,11 +65,27 @@ func main() {
 			Addr = Ip4or6(Addr)
 		}
 
+		var TaskExecute string
+
+		if *BinaryToExcute != "" {
+			TaskExecute = *BinaryToExcute
+		} else {
+			// Read binary from config file
+			TaskExecute = Config.BinaryToExecute
+		}
+
 		// Starting screen share headless
 		cmd := exec.Command("chromium-browser" ,"--no-sandbox","--auto-select-desktop-capture-source=Entire screen","--url","https://" + Addr + ":8888/?mode=headless","--ignore-certificate-errors")
-		if err := cmd.Run(); err != nil {
+		if err := cmd.Start(); err != nil {
 			log.Fatalln(err)
 		}
+
+		// Makes program sleep for 2 seconds to allow chromium browser to open
+		time.Sleep(3 * time.Second)
+
+		// Task to be executed
+		RunTask(TaskExecute)
+
 		return
 
 	}
@@ -130,4 +147,14 @@ func Ip4or6(s string) string {
 	}
 	return "[" + s + "]"
 
+}
+
+func RunTask(task string) error {
+	// Halts the process
+	cmd := exec.Command(task)
+	if err := cmd.Start(); err != nil {
+		return err
+	}
+
+	return nil
 }
