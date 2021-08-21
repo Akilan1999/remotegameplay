@@ -3,4 +3,4 @@ env/
 remotegameplay
 room.json
 laplace
-/scripts
+scripts/
