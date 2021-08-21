@@ -23,7 +23,7 @@ type Config struct {
 	BarrierHostName   string
 	Rooms             string
 	IPAddress         string
-	BinaryToExecute   string
+	ScriptToExecute   string
 }
 
 // Exists reports whether the named file or directory exists.
@@ -62,7 +62,7 @@ func SetDefaults() error {
     defaults["BarrierHostName"] = name
 	defaults["Rooms"] = defaultPath + "room.json"
 	defaults["IPAddress"] = "0.0.0.0"
-	defaults["BinaryToExecute"] = "/home/akilan/.local/share/Steam/steamapps/common/X-Plane 11"
+	defaults["ScriptToExecute"] = ""
 
 	//Paths to search for config file
 	configPaths = append(configPaths, defaultPath)

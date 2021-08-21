@@ -1,0 +1,6 @@
+# Navigating to the directory where XPlane11 is present 
+cd /home/akilan/.local/share/Steam/steamapps/common/X-Plane\ 11/
+
+# Execute Xplane 11 binary 
+./X-Plane-x86_64
+

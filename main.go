@@ -71,7 +71,7 @@ func main() {
 			TaskExecute = *BinaryToExcute
 		} else {
 			// Read binary from config file
-			TaskExecute = Config.BinaryToExecute
+			TaskExecute = Config.ScriptToExecute
 		}
 
 		// Starting screen share headless
@@ -84,7 +84,11 @@ func main() {
 		time.Sleep(3 * time.Second)
 
 		// Task to be executed
-		RunTask(TaskExecute)
+		err = RunTask(TaskExecute)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
 
 		return
 
@@ -94,7 +98,7 @@ func main() {
 	if *killServer {
 		cmd := exec.Command("pkill" ,"laplace")
 		if err := cmd.Run(); err != nil {
-			log.Fatalln(err)
+			fmt.Println(err)
 		}
 		return
 	}
@@ -102,7 +106,7 @@ func main() {
 	if *killChromium {
 		cmd := exec.Command("pkill" ,"chromium")
 		if err := cmd.Run(); err != nil {
-			log.Fatalln(err)
+			fmt.Println(err)
 		}
 		return
 	}
@@ -151,7 +155,7 @@ func Ip4or6(s string) string {
 
 func RunTask(task string) error {
 	// Halts the process
-	cmd := exec.Command(task)
+	cmd := exec.Command("sh",task)
 	if err := cmd.Start(); err != nil {
 		return err
 	}

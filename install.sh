@@ -7,38 +7,24 @@
 # Updating and installing go compiler
 apt update
 apt install -y golang
-
-# Installing git
+apt install -y jq
+## Installing git
 apt install -y git
-
-# Installing barrier
+## Installing barrier
 apt install -y barrier
-
-# Installing chromium
+## Installing chromium
 wget https://github.com/RobRich999/Chromium_Clang/releases/download/v94.0.4585.0-r904940-linux64-deb-avx/chromium-browser-unstable_94.0.4585.0-1_amd64.deb
 apt install -y ./chromium-browser-unstable_94.0.4585.0-1_amd64.deb
-
-# clone remotegameplay distribution
+#
+## clone remotegameplay distribution
 git clone https://github.com/Akilan1999/remotegameplay
-# enter cloned directory
+## enter cloned directory
 cd remotegameplay
-
+# sets REMOTEGAMEPLAY path
 export REMOTEGAMEPLAY=$PWD
 
 # Build laplace binary file
 go build .
 
+# Set configuration laplace file
 ./laplace -setconfig
-./laplace -tls -addr 0.0.0.0:8888 &
-./laplace -headless -addr `$1` &
-
-sleep 2
-
-./laplace -headless -roomInfo >> /tmp/output.txt
-
-# Installation game script here and start remote gameplay
-
-
-
-
-

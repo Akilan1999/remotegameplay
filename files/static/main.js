@@ -225,8 +225,9 @@ function getServerHostName() {
     // Source https://stackoverflow.com/questions/247483/http-get-request-in-javascript
     var xmlHttp = new XMLHttpRequest()
     xmlHttp.open( "GET", getHttpUrl() + "/hostname", false ); // false for synchronous request
-    xmlHttp.send( null );
+    xmlHttp.send(null);
     LaplaceVar.ui.barrierhostname.innerHTML = xmlHttp.responseText
+    //console.log(window.location.href.split('?')[0])
 }
 
 function updateStatusUIStream() {
@@ -252,7 +253,7 @@ function getWebsocketUrl() {
 
 function getHttpUrl() {
     //if (window.location.protocol === "https:") {
-        return `${window.location.href}`
+        return window.location.href.split('?')[0]
     // } else {
     //     return `${window.location.href}`
     // }
@@ -580,8 +581,17 @@ function routeByUrl() {
     if (paramStream && paramStream.length > 0) {
         return doStream();
     }
+    // If the room ID is provided
+    const roomId = u.searchParams.get('roomID');
+    if (roomId && roomId.length > 0) {
+        AddRoomID(roomId);
+    }
 }
 
+// Adds the room information to the ID inputRoomID
+function AddRoomID(roomID) {
+    document.getElementById('inputRoomID').value = roomID
+}
 function leaveRoom() {
     window.location.href = getBaseUrl();
 }
