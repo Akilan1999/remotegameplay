@@ -35,7 +35,7 @@ Barrier is software that mimics the functionality of a KVM switch, which histori
 ```bash
 $ git clone https://github.com/adamyordan/laplace.git
 $ cd laplace && go build -o laplace main.go
-$ export LAPLACE = $PATH
+$ export REMOTEGAMING = $PATH
 $ ./laplace --help
 $ ./laplace -setconfig 
 ```
