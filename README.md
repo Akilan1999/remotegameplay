@@ -13,6 +13,9 @@ accepting remote inputs.
 There will be ansible instructions which can be executed inside into any virtual environment. This will
 be a plugin which complements the project [P2PRC](https://p2prc.akilan.io)
 
+## Testing with Xplane 11
+[![IMAGE ALT TEXT](https://i.ytimg.com/vi/65dn7TRgzeE/hqdefault.jpg)](https://www.youtube.com/watch?v=65dn7TRgzeE "Running Xplane 11 using WebRTC")
+
 ## Laplace
 Based on the fork:
 https://github.com/Akilan1999/laplace/tree/keyboard_mouse
