@@ -21,7 +21,7 @@ git clone https://github.com/Akilan1999/remotegameplay
 ## enter cloned directory
 cd remotegameplay
 # sets REMOTEGAMEPLAY path
-export REMOTEGAMEPLAY=$PWD
+export REMOTEGAMING=$PWD
 
 # Build laplace binary file
 go build .
