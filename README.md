@@ -2,7 +2,7 @@
 The aim of this project is develop a WebRTC screenshare designed for streaming video games and
 accepting remote inputs.
 There will be ansible instructions which can be executed inside into any virtual environment. This will
-a plugin which complements the project [P2PRC](https://p2prc.akilan.io)
+be a plugin which complements the project [P2PRC](https://p2prc.akilan.io)
 
 ## Laplace
 Based on the fork:
@@ -12,7 +12,7 @@ https://github.com/Akilan1999/laplace/tree/keyboard_mouse
 
 
 ### Installation required to share keyboard and mouse
-To do this we ensure that the client either has has a IPV6 
+To do this we ensure that the client either has an IPV6 
 address or a public IPV4 address. 
 We use the popular open repository known as [Barrier KVM](https://github.com/debauchee/barrier). 
 
@@ -97,6 +97,35 @@ By default, you can run the executable without any argument to listen to TLS por
 A self-signed certificate files are provided to ease up development. If you want to run 
 with barrier KVM. Run as non-root. 
 
+### Starting game when screen-share is triggered
+This requires creating a bash script to trigger when the screenshare begins.
+#### Ex: Start Xplane 11
+Let's call this script xplane11.sh
+```bash
+# Navigating to the directory where XPlane11 is present 
+cd /path/.local/share/Steam/steamapps/common/X-Plane\ 11/
+
+# Execute Xplane 11 binary 
+./X-Plane-x86_64
+```
+#### Open config file 
+```bash
+{
+  "barrierhostname": "<barrier host name>",
+  "ipaddress": "0.0.0.0",
+  "rooms": "<path to room.json file>",
+  "scripttoexecute": "<path to script to execute (In case the Xplane 11 script)>",
+  "systemusername": "<system username>"
+}
+```
+### Call from built script which starts the server , creates room and outputs the ID
+```bash
+sh run.sh <IPV6 or Public IPV4 address of server>
+```
+Note: This script starts the server using the port 8888 by default
+The 2 steps below are if you want to start them command by command 
+
+### Starting server
 ```bash
 $ ./laplace -tls -addr 0.0.0.0:8888
 2020/03/25 01:01:10 Listening on TLS: 0.0.0.0:8888
