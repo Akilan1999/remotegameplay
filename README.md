@@ -1,4 +1,13 @@
-# Remote game play
+<h1 align="center">
+  <br>
+  <a href=""><img src="https://user-images.githubusercontent.com/31743758/132035109-cd8a145b-6e32-4d16-b9f8-f77f8de46a12.png" alt="p2prc" width="400"></a>
+  <br>
+</h1>
+
+<!-- seperator -->
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Akilan1999/p2p-rendering-computation/graphs/commit-activity)
+[![made-with-Go](https://img.shields.io/badge/Made%20with-Go-1f425f.svg)](http://golang.org)
+
 The aim of this project is develop a WebRTC screenshare designed for streaming video games and
 accepting remote inputs.
 There will be ansible instructions which can be executed inside into any virtual environment. This will
