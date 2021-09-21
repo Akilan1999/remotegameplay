@@ -24,22 +24,14 @@ https://github.com/Akilan1999/laplace/tree/keyboard_mouse
 
 
 ### Installation required to share keyboard and mouse
-To do this we ensure that the client either has an IPV6 
-address or a public IPV4 address. 
-We use the popular open repository known as [Barrier KVM](https://github.com/debauchee/barrier). 
+We need to ensure that the client has SSH client installed.
+We use the popular open repository known as [x2x](https://github.com/dottedmag/x2x). 
 
-#### What is Barrier kvm?
+Note: x2x runs on top of SSH. 
 
-Barrier is software that mimics the functionality of a KVM switch, which historically would allow you to use a single keyboard and mouse to control multiple computers by physically turning a dial on the box to switch the machine you're controlling at any given moment. Barrier does this in software, allowing you to tell it which machine to control by moving your mouse to the edge of the screen, or by using a keypress to switch focus to a different system.
-
-#### Barrier KVM build status and links to install 
-|Platform       |Build Status|
-|            --:|:--         |
-|Linux          |[![Build Status](https://dev.azure.com/debauchee/Barrier/_apis/build/status/debauchee.barrier?branchName=master&jobName=Linux%20Build)](https://dev.azure.com/debauchee/Barrier/_build/latest?definitionId=1&branchName=master)|
-|Mac            |[![Build Status](https://dev.azure.com/debauchee/Barrier/_apis/build/status/debauchee.barrier?branchName=master&jobName=Mac%20Build)](https://dev.azure.com/debauchee/Barrier/_build/latest?definitionId=1&branchName=master)|
-|Windows Debug  |[![Build Status](https://dev.azure.com/debauchee/Barrier/_apis/build/status/debauchee.barrier?branchName=master&jobName=Windows%20Build&configuration=Windows%20Build%20Debug)](https://dev.azure.com/debauchee/Barrier/_build/latest?definitionId=1&branchName=master)|
-|Windows Release|[![Build Status](https://dev.azure.com/debauchee/Barrier/_apis/build/status/debauchee.barrier?branchName=master&jobName=Windows%20Build&configuration=Windows%20Build%20Release%20with%20Release%20Installer)](https://dev.azure.com/debauchee/Barrier/_build/latest?definitionId=1&branchName=master)|
-|Snap           |[![Snap Status](https://build.snapcraft.io/badge/debauchee/barrier.svg)](https://build.snapcraft.io/user/debauchee/barrier)|
+#### What is x2x?
+x2x allows the keyboard, mouse on one X display to be used to control another X
+display. It also shares X clipboards between the displays.
 
 
 ### Build from source
@@ -48,7 +40,6 @@ Barrier is software that mimics the functionality of a KVM switch, which histori
 # Assumes to be running on ubuntu 20.04
 # Ports required to be allocated internally:
 # - 8888 (laplace server)
-# - 24800 (barrier server)
 
 # Updating and installing go compiler
 apt update
@@ -56,8 +47,8 @@ apt install -y golang
 apt install -y jq
 ## Installing git
 apt install -y git
-## Installing barrier
-apt install -y barrier
+## Installing x2x
+apt install -y x2x
 ## Installing chromium
 wget https://github.com/RobRich999/Chromium_Clang/releases/download/v94.0.4585.0-r904940-linux64-deb-avx/chromium-browser-unstable_94.0.4585.0-1_amd64.deb
 apt install -y ./chromium-browser-unstable_94.0.4585.0-1_amd64.deb
