@@ -65,6 +65,8 @@ go build .
 
 # Set configuration laplace file
 ./laplace -setconfig
+
+# Open config.json file and add SSH password for x2x
 ```
 
 ### Program Execution
