@@ -47,6 +47,8 @@ apt install -y golang
 apt install -y jq
 ## Installing git
 apt install -y git
+# Installing OpenSSH server 
+apt install -y openssh-server
 ## Installing x2x
 apt install -y x2x
 ## Installing chromium
