@@ -24,6 +24,7 @@ type Config struct {
 	Rooms             string
 	IPAddress         string
 	ScriptToExecute   string
+	SSHPassword       string
 }
 
 // Exists reports whether the named file or directory exists.
@@ -63,6 +64,7 @@ func SetDefaults() error {
 	defaults["Rooms"] = defaultPath + "room.json"
 	defaults["IPAddress"] = "0.0.0.0"
 	defaults["ScriptToExecute"] = ""
+	defaults["SSHPassword"] = ""
 
 	//Paths to search for config file
 	configPaths = append(configPaths, defaultPath)
