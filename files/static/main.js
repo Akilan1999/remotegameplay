@@ -144,6 +144,9 @@ function initUI() {
     LaplaceVar.ui.videoContainer = document.getElementById('video-container');
     LaplaceVar.ui.barrierIP = document.getElementById('barrierIP');
     LaplaceVar.ui.barrierhostname = document.getElementById('hostname');
+    LaplaceVar.ui.serverUsername = document.getElementById('Username');
+    LaplaceVar.ui.serverIP = document.getElementById('IP');
+    LaplaceVar.ui.SSHPassword = document.getElementById('SSHPassword')
     LaplaceVar.headless = { result :"0"};
 
     LaplaceVar.ui.joinForm.onsubmit = async e => {
@@ -197,7 +200,10 @@ function initUI() {
     }
 
     //getting server hostname
-    getServerHostName()
+    getServerIPandHostname()
+
+    //getting SSHPassword
+    getSSHPassword()
 
     // Getting query string from the URL
     const queryString = window.location.search;
@@ -221,14 +227,28 @@ function initUI() {
 // This is so that user can
 // add the host name to connect
 // to laplace
-function getServerHostName() {
+function getServerIPandHostname() {
     // Source https://stackoverflow.com/questions/247483/http-get-request-in-javascript
     var xmlHttp = new XMLHttpRequest()
     xmlHttp.open( "GET", getHttpUrl() + "/hostname", false ); // false for synchronous request
     xmlHttp.send(null);
-    LaplaceVar.ui.barrierhostname.innerHTML = xmlHttp.responseText
+    //LaplaceVar.ui.barrierhostname.innerHTML = xmlHttp.responseText
+    LaplaceVar.ui.serverUsername.innerHTML = xmlHttp.responseText
+
+    // Server IP address
+    LaplaceVar.ui.serverIP.innerHTML = window.location.hostname
     //console.log(window.location.href.split('?')[0])
 }
+
+function getSSHPassword() {
+    // Source https://stackoverflow.com/questions/247483/http-get-request-in-javascript
+    var xmlHttp = new XMLHttpRequest()
+    xmlHttp.open( "GET", getHttpUrl() + "/SSHPassword", false ); // false for synchronous request
+    xmlHttp.send(null);
+
+    LaplaceVar.ui.SSHPassword.innerHTML = xmlHttp.responseText
+}
+
 
 function updateStatusUIStream() {
     LaplaceVar.status.peers = Object.keys(LaplaceVar.pcs).map(s => s.split('$')[1]);
@@ -592,6 +612,7 @@ function routeByUrl() {
 function AddRoomID(roomID) {
     document.getElementById('inputRoomID').value = roomID
 }
+
 function leaveRoom() {
     window.location.href = getBaseUrl();
 }

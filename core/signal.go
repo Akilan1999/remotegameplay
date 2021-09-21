@@ -53,7 +53,20 @@ func GetHttp() *http.ServeMux {
             return
         }
 
-        fmt.Fprintf(w, configResp.BarrierHostName)
+        fmt.Fprintf(w, configResp.SystemUsername)
+    })
+
+    //Get SSH password of the current machine
+    server.HandleFunc("/SSHPassword", func(w http.ResponseWriter, r *http.Request) {
+
+        // Read hostname from config file
+        configResp, err := config.ConfigInit()
+        if err != nil {
+            print(err)
+            return
+        }
+
+        fmt.Fprintf(w, configResp.SSHPassword)
     })
 
     server.HandleFunc("/ws_serve", func(writer http.ResponseWriter, request *http.Request) {

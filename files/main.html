@@ -45,18 +45,18 @@
             <div class="form-group">
                 <input id="inputRoomID" type="text" class="form-control form-control-lg text-center" placeholder="Enter room ID" required>
             </div>
-            <h4>Connect to Barrier KVM (Beta)</h4>
-            <p class="help-text">
-                This is a feature is still on beta testing. This feature will ensure that you can share the keyboard
-                and mouse of the server machine.
-                <br>
-                <span class="text-success font-weight-bold"> Note: This only works if the laplace server has barrierc installed and the room name you are connecting
-                    too belongs to the server.</span>
-            </p>
-            <h6>Host Name: <span id="hostname"> Not detected  </span></h6>
-            <div class="form-group">
-                <input id="barrierIP" type="text" class="form-control form-control-lg text-center" placeholder="IPV6 or IPV4 address">
-            </div>
+<!--            <h4>Connect to Barrier KVM (Beta)</h4>-->
+<!--            <p class="help-text">-->
+<!--                This is a feature is still on beta testing. This feature will ensure that you can share the keyboard-->
+<!--                and mouse of the server machine.-->
+<!--                <br>-->
+<!--                <span class="text-success font-weight-bold"> Note: This only works if the laplace server has barrierc installed and the room name you are connecting-->
+<!--                    too belongs to the server.</span>-->
+<!--            </p>-->
+<!--            <h6>Host Name: <span id="hostname"> Not detected  </span></h6>-->
+<!--            <div class="form-group">-->
+<!--                <input id="barrierIP" type="text" class="form-control form-control-lg text-center" placeholder="IPV6 or IPV4 address">-->
+<!--            </div>-->
             <button type="submit" class="btn btn-dark btn-block" value="submit">Join</button>
         </form>
     </div>
@@ -145,6 +145,18 @@
     </div>
     <hr>
     <div>
+        <h4>Use keyboard and mouse</h4>
+        <p>
+            Ensure you have an SSH client installed on your machine
+        </p>
+        <h4>Run the following command on terminal:</h4>
+        <p>ssh -XC <span id="Username"></span>@<span id="IP"></span> x2x -west -to :0.0</p>
+        <p>Password: <span id="SSHPassword"></span></p>
+        <p class="help-text">
+            Move your mouse to the west, and you should have access to the other computer.
+        </p>
+
+
         <h6>Status</h6>
         <table class="table table-borderless table-sm table-meta">
             <tr>
