@@ -1,4 +1,3 @@
-
 package config
 
 import (
@@ -6,7 +5,7 @@ import (
 )
 
 func TestConfigInit(t *testing.T) {
-	_,err := ConfigInit()
+	_, err := ConfigInit()
 	if err != nil {
 		t.Error(err)
 	}

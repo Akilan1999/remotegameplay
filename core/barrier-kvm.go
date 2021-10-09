@@ -5,20 +5,20 @@
 package core
 
 import (
-	"laplace/config"
+	"github.com/Akilan1999/remotegameplay/config"
 	"os/exec"
 )
 
 // Barrier It's preferred that the IP address used is a IPV6 address
 type Barrier struct {
-	NodeName    string
-	IPAddress   string
-	Mode        string
-	Process     *exec.Cmd
+	NodeName  string
+	IPAddress string
+	Mode      string
+	Process   *exec.Cmd
 }
 
 // CreateBarrierSession Command to run "barrier.barrierc --debug INFO -f 192.168.0.175"
-func (b *Barrier)CreateBarrierSession() error {
+func (b *Barrier) CreateBarrierSession() error {
 	//Checks if barrier client exists
 
 	if err := DetectBarrier(); err != nil {
@@ -31,7 +31,7 @@ func (b *Barrier)CreateBarrierSession() error {
 		return err
 	}
 
-	cmd := exec.Command("sudo","-u",configResp.SystemUsername,"barrierc","-f","--debug", "DEBUG" ,"--log", "/tmp/barrier.log",b.IPAddress)
+	cmd := exec.Command("sudo", "-u", configResp.SystemUsername, "barrierc", "-f", "--debug", "DEBUG", "--log", "/tmp/barrier.log", b.IPAddress)
 
 	// USE THE FOLLOWING TO DEBUG
 	//cmdReader, err := cmd.StdoutPipe()
@@ -62,18 +62,17 @@ func (b *Barrier)CreateBarrierSession() error {
 
 	println(cmd.Path)
 
-
 	// Saves the state of the command in the struct
 	b.Process = cmd
 	return nil
 }
 
 // DeleteBarrierSession Deletes barrier client session running
-func (b *Barrier)DeleteBarrierSession() error {
+func (b *Barrier) DeleteBarrierSession() error {
 	// Halts the process
-	cmd := exec.Command("pkill" ,"barrierc")
+	cmd := exec.Command("pkill", "barrierc")
 	if err := cmd.Run(); err != nil {
-	      return err
+		return err
 	}
 
 	return nil

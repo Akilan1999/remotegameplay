@@ -24,14 +24,30 @@ https://github.com/Akilan1999/laplace/tree/keyboard_mouse
 
 
 ### Installation required to share keyboard and mouse
-We need to ensure that the client has SSH client installed.
-We use the popular open repository known as [x2x](https://github.com/dottedmag/x2x). 
-
-Note: x2x runs on top of SSH. 
+Currently, you can either use [x2x](https://github.com/dottedmag/x2x) or [Barrier KVM]()
+We need to ensure that the client has SSH client installed or Barrierc.
 
 #### What is x2x?
 x2x allows the keyboard, mouse on one X display to be used to control another X
 display. It also shares X clipboards between the displays.
+
+Note: x2x runs on top of SSH.
+
+#### What is Barrier kvm?
+
+Barrier is software that mimics the functionality of a KVM switch, which historically would allow you to use a single
+keyboard and mouse to control multiple computers by physically turning a dial on the box to switch the machine you're
+controlling at any given moment. Barrier does this in software, allowing you to tell it which machine to control by
+moving your mouse to the edge of the screen, or by using a keypress to switch focus to a different system.
+
+#### Barrier KVM build status and links to install
+|Platform       |Build Status|
+|            --:|:--         |
+|Linux          |[![Build Status](https://dev.azure.com/debauchee/Barrier/_apis/build/status/debauchee.barrier?branchName=master&jobName=Linux%20Build)](https://dev.azure.com/debauchee/Barrier/_build/latest?definitionId=1&branchName=master)|
+|Mac            |[![Build Status](https://dev.azure.com/debauchee/Barrier/_apis/build/status/debauchee.barrier?branchName=master&jobName=Mac%20Build)](https://dev.azure.com/debauchee/Barrier/_build/latest?definitionId=1&branchName=master)|
+|Windows Debug  |[![Build Status](https://dev.azure.com/debauchee/Barrier/_apis/build/status/debauchee.barrier?branchName=master&jobName=Windows%20Build&configuration=Windows%20Build%20Debug)](https://dev.azure.com/debauchee/Barrier/_build/latest?definitionId=1&branchName=master)|
+|Windows Release|[![Build Status](https://dev.azure.com/debauchee/Barrier/_apis/build/status/debauchee.barrier?branchName=master&jobName=Windows%20Build&configuration=Windows%20Build%20Release%20with%20Release%20Installer)](https://dev.azure.com/debauchee/Barrier/_build/latest?definitionId=1&branchName=master)|
+|Snap           |[![Snap Status](https://build.snapcraft.io/badge/debauchee/barrier.svg)](https://build.snapcraft.io/user/debauchee/barrier)|
 
 
 ### Build from source
@@ -51,6 +67,8 @@ apt install -y git
 apt install -y openssh-server
 ## Installing x2x
 apt install -y x2x
+## Installing barrier
+apt install -y barrier
 ## Installing chromium
 wget https://github.com/RobRich999/Chromium_Clang/releases/download/v94.0.4585.0-r904940-linux64-deb-avx/chromium-browser-unstable_94.0.4585.0-1_amd64.deb
 apt install -y ./chromium-browser-unstable_94.0.4585.0-1_amd64.deb
@@ -117,11 +135,13 @@ cd /path/.local/share/Steam/steamapps/common/X-Plane\ 11/
 ```
 #### Open config file 
 ```bash
+
 {
   "barrierhostname": "<barrier host name>",
   "ipaddress": "0.0.0.0",
   "rooms": "<path to room.json file>",
   "scripttoexecute": "<path to script to execute (In case the Xplane 11 script)>",
+  "sshpassword": "<SSH password for x2x>",
   "systemusername": "<system username>"
 }
 ```

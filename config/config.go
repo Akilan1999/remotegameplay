@@ -8,23 +8,23 @@ import (
 
 var (
 	defaultPath string
-	defaults = map[string]interface{}{
-		"SystemUsername": "",
+	defaults    = map[string]interface{}{
+		"SystemUsername":  "",
 		"BarrierHostName": "",
 	}
-	configName = "config"
-	configType = "json"
-	configFile = "config.json"
+	configName  = "config"
+	configType  = "json"
+	configFile  = "config.json"
 	configPaths []string
 )
 
 type Config struct {
-	SystemUsername    string
-	BarrierHostName   string
-	Rooms             string
-	IPAddress         string
-	ScriptToExecute   string
-	SSHPassword       string
+	SystemUsername  string
+	BarrierHostName string
+	Rooms           string
+	IPAddress       string
+	ScriptToExecute string
+	SSHPassword     string
 }
 
 // Exists reports whether the named file or directory exists.
@@ -47,7 +47,7 @@ func SetDefaults() error {
 	defaultPath = curDir + "/"
 
 	// Get system username
-	user ,err := user.Current()
+	user, err := user.Current()
 	if err != nil {
 		return err
 	}
@@ -59,8 +59,8 @@ func SetDefaults() error {
 	}
 
 	//Setting default paths for the config file
-    defaults["SystemUsername"] = user.Username
-    defaults["BarrierHostName"] = name
+	defaults["SystemUsername"] = user.Username
+	defaults["BarrierHostName"] = name
 	defaults["Rooms"] = defaultPath + "room.json"
 	defaults["IPAddress"] = "0.0.0.0"
 	defaults["ScriptToExecute"] = ""
@@ -88,7 +88,7 @@ func SetDefaults() error {
 	return nil
 }
 
-func ConfigInit()(*Config,error) {
+func ConfigInit() (*Config, error) {
 
 	curDir := os.Getenv("REMOTEGAMING")
 	//Setting current directory to default path
@@ -97,7 +97,7 @@ func ConfigInit()(*Config,error) {
 	configPaths = append(configPaths, defaultPath)
 
 	//Add all possible configurations paths
-	for _,v := range configPaths {
+	for _, v := range configPaths {
 		viper.AddConfigPath(v)
 	}
 
@@ -105,23 +105,23 @@ func ConfigInit()(*Config,error) {
 	if err := viper.ReadInConfig(); err != nil {
 		// If the error thrown is config file not found
 		//Sets default configuration to viper
-		for k,v := range defaults {
-			viper.SetDefault(k,v)
+		for k, v := range defaults {
+			viper.SetDefault(k, v)
 		}
 		viper.SetConfigName(configName)
 		viper.SetConfigFile(configFile)
 		viper.SetConfigType(configType)
 
 		if err = viper.WriteConfig(); err != nil {
-			return nil,err
+			return nil, err
 		}
 	}
 
 	// Adds configuration to the struct
 	var config Config
 	if err := viper.Unmarshal(&config); err != nil {
-		return nil,err
+		return nil, err
 	}
 
-	return &config,nil
+	return &config, nil
 }

@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"laplace/config"
-	"laplace/core"
+	"github.com/Akilan1999/remotegameplay/config"
+	"github.com/Akilan1999/remotegameplay/core"
 	"log"
 	"math/rand"
 	"net/http"
@@ -15,6 +15,7 @@ import (
 
 func main() {
 	addr := flag.String("addr", "0.0.0.0:443", "Listen address")
+	port := flag.String("port", "8888", "port for  running the server")
 	tls := flag.Bool("tls", false, "Use TLS")
 	setconfig := flag.Bool("setconfig", false, "Generates a config file")
 	certFile := flag.String("certFile", "files/server.crt", "TLS cert file")
@@ -23,7 +24,7 @@ func main() {
 	roomInfo := flag.Bool("roomInfo", false, "Getting room id of headless server")
 	killServer := flag.Bool("killServer", false, "Kills the laplace")
 	killChromium := flag.Bool("killChromium", false, "Kills all chromuim")
-	BinaryToExcute := flag.String("BinaryToExecute","","Providing path (i.e Absolute path) of binary to execute")
+	BinaryToExcute := flag.String("BinaryToExecute", "", "Providing path (i.e Absolute path) of binary to execute")
 
 	flag.Parse()
 
@@ -46,7 +47,6 @@ func main() {
 		PrettyPrint(room)
 		return
 	}
-
 
 	// Running in headless mode
 	if *headless {
@@ -75,7 +75,7 @@ func main() {
 		}
 
 		// Starting screen share headless
-		cmd := exec.Command("chromium-browser" ,"--no-sandbox","--auto-select-desktop-capture-source=Entire screen","--url","https://" + Addr + ":8888/?mode=headless","--ignore-certificate-errors")
+		cmd := exec.Command("chromium-browser", "--no-sandbox", "--auto-select-desktop-capture-source=Entire screen", "--url", "https://"+Addr+":"+*port+"/?mode=headless", "--ignore-certificate-errors")
 		if err := cmd.Start(); err != nil {
 			log.Fatalln(err)
 		}
@@ -96,21 +96,20 @@ func main() {
 
 	// kills laplace server
 	if *killServer {
-		cmd := exec.Command("pkill" ,"laplace")
+		cmd := exec.Command("pkill", "remotegameplay")
 		if err := cmd.Run(); err != nil {
 			fmt.Println(err)
 		}
 		return
 	}
-    // kills chromium server
+	// kills chromium server
 	if *killChromium {
-		cmd := exec.Command("pkill" ,"chromium")
+		cmd := exec.Command("pkill", "chromium")
 		if err := cmd.Run(); err != nil {
 			fmt.Println(err)
 		}
 		return
 	}
-
 
 	if *tls {
 		log.Println("Listening on TLS:", *addr)
@@ -155,7 +154,7 @@ func Ip4or6(s string) string {
 
 func RunTask(task string) error {
 	// Halts the process
-	cmd := exec.Command("sh",task)
+	cmd := exec.Command("sh", task)
 	if err := cmd.Start(); err != nil {
 		return err
 	}

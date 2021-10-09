@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Laplace</title>
+    <title>RemoteGamePlay</title>
     <link rel="stylesheet" href="/static/bootstrap.min.css">
     <link rel="stylesheet" href="/static/main.css?v=0.0.5">
 </head>
 <body>
 
 <nav class="navbar">
-    <a class="navbar-brand text-dark" href="/">Laplace</a>
+    <a class="navbar-brand text-dark" href="/">RemoteGamePlay</a>
     <span class="navbar-brand header-room" id="room-text"></span>
 </nav>
 
 <div class="container">
     <div class="panel" id="panel">
+        <p> based on the open source project Laplace </p>
         <p class="help-text">
             <b>Laplace</b> is an open-source project to enable screen sharing directly via browser.
             Made possible using WebRTC for low latency peer-to-peer connections,
@@ -45,18 +46,18 @@
             <div class="form-group">
                 <input id="inputRoomID" type="text" class="form-control form-control-lg text-center" placeholder="Enter room ID" required>
             </div>
-<!--            <h4>Connect to Barrier KVM (Beta)</h4>-->
-<!--            <p class="help-text">-->
-<!--                This is a feature is still on beta testing. This feature will ensure that you can share the keyboard-->
-<!--                and mouse of the server machine.-->
-<!--                <br>-->
-<!--                <span class="text-success font-weight-bold"> Note: This only works if the laplace server has barrierc installed and the room name you are connecting-->
-<!--                    too belongs to the server.</span>-->
-<!--            </p>-->
-<!--            <h6>Host Name: <span id="hostname"> Not detected  </span></h6>-->
-<!--            <div class="form-group">-->
-<!--                <input id="barrierIP" type="text" class="form-control form-control-lg text-center" placeholder="IPV6 or IPV4 address">-->
-<!--            </div>-->
+            <h4>Connect to Barrier KVM (Beta)</h4>
+            <p class="help-text">
+                This is a feature is still on beta testing. This feature will ensure that you can share the keyboard
+                and mouse of the server machine.
+                <br>
+                <span class="text-success font-weight-bold"> Note: This only works if the laplace server has Barrierc installed and the room name you are connecting
+                    too belongs to the server.</span>
+            </p>
+            <h6>Host Name: <span id="hostname"> Not detected  </span></h6>
+            <div class="form-group">
+                <input id="barrierIP" type="text" class="form-control form-control-lg text-center" placeholder="IPV6 or IPV4 address">
+            </div>
             <button type="submit" class="btn btn-dark btn-block" value="submit">Join</button>
         </form>
     </div>
@@ -181,8 +182,8 @@
 <div class="container">
     <hr>
     <div class="text-center small" id="footer">
-        <span>Laplace Project by Adam Jordan.</span>
-        <a href="https://github.com/adamyordan/laplace">Source Code</a>
+        <span><a href="https://github.com/Akilan1999/remotegameplay">RemoteGamePlay</a> Project by <a href="https://akilan.io">Akilan Selvacoumar</a> based on the fork
+            of <a href="https://github.com/Akilan1999/laplace/tree/keyboard_mouse">Laplace</a>.</span>
     </div>
 </div>
 
