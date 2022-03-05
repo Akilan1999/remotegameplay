@@ -13,8 +13,30 @@ accepting remote inputs.
 There will be ansible instructions which can be executed inside into any virtual environment. This will
 be a plugin which complements the project [P2PRC](https://p2prc.akilan.io)
 
-## Testing with Xplane 11
-[![IMAGE ALT TEXT](https://i.ytimg.com/vi/65dn7TRgzeE/hqdefault.jpg)](https://www.youtube.com/watch?v=65dn7TRgzeE "Running Xplane 11 using WebRTC")
+# Index
+
+- [Testing with X-Plane 11](#testing-with-x-plane-11)
+- [Laplace](#laplace)
+- [Installation](#installation)
+  - [Installation required to share keyboard and mouse](#installation-required-to-share-keyboard-and-mouse)
+    - [What is x2x?](#what-is-x2x)
+    - [What is Barrier KVM](#what-is-barrier-kvm)
+    - [Barrier KVM build status and links to install](#barrier-kvm-build-status-and-links-to-install)
+  - [Build from Source](#build-from-source)
+- [Program Execution](#program-execution)
+  - [Starting game when screen-share is triggered](#starting-game-when-screen-share-is-triggered)
+    - [Ex: Start X-Plane 11](#ex-start-x-plane-11)
+    - [Open config file](#open-config-file)
+  - [Call from built script which starts the server , creates room and outputs the ID](#call-from-built-script-which-starts-the-server--creates-room-and-outputs-the-id)
+  - [Starting the Server](#starting-server)
+  - [Starting the Screenshare](#starting-screenshare)
+- [Contributing](#contributing)
+- [Discord Server Link](#or)
+
+---
+
+## Testing with [X-Plane 11](https://www.x-plane.com/)
+[![A screenshot of X-Plane 11 (flight simulator game) running smoothly via WebRTC](https://i.ytimg.com/vi/65dn7TRgzeE/hqdefault.jpg)](https://www.youtube.com/watch?v=65dn7TRgzeE "Running X-Plane 11 using WebRTC")
 
 ## Laplace
 Based on the fork:
@@ -28,12 +50,12 @@ Currently, you can either use [x2x](https://github.com/dottedmag/x2x) or [Barrie
 We need to ensure that the client has SSH client installed or Barrierc.
 
 #### What is x2x?
-x2x allows the keyboard, mouse on one X display to be used to control another X
+[x2x](https://github.com/dottedmag/x2x) allows the keyboard, mouse on one X display to be used to control another X
 display. It also shares X clipboards between the displays.
 
 Note: x2x runs on top of SSH.
 
-#### What is Barrier kvm?
+#### What is Barrier KVM?
 
 Barrier is software that mimics the functionality of a KVM switch, which historically would allow you to use a single
 keyboard and mouse to control multiple computers by physically turning a dial on the box to switch the machine you're
@@ -89,7 +111,7 @@ go build .
 # Open config.json file and add SSH password for x2x
 ```
 
-### Program Execution
+## Program Execution
 
 Executing this project basically serves an HTTP server that will host the frontend and the WebSocket implementation.
 Note that you sometimes need to run HTTPs in order for browser to connect to websocket.
@@ -124,13 +146,13 @@ with barrier KVM. Run as non-root.
 
 ### Starting game when screen-share is triggered
 This requires creating a bash script to trigger when the screenshare begins.
-#### Ex: Start Xplane 11
+#### Ex: Start X-Plane 11
 Let's call this script xplane11.sh
 ```bash
-# Navigating to the directory where XPlane11 is present 
+# Navigating to the directory where X-Plane11 is present 
 cd /path/.local/share/Steam/steamapps/common/X-Plane\ 11/
 
-# Execute Xplane 11 binary 
+# Execute X-Plane 11 binary 
 ./X-Plane-x86_64
 ```
 #### Open config file 
@@ -175,5 +197,3 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 ### or 
 
 [![Support Server](https://discordapp.com/api/guilds/854397492795277322/widget.png?style=banner2)](https://discord.gg/b4nRGTjYqy)
-
-
