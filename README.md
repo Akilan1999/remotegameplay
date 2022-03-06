@@ -9,7 +9,7 @@
 [![made-with-Go](https://img.shields.io/badge/Made%20with-Go-1f425f.svg)](http://golang.org)
 
 The aim of this project is develop a WebRTC screenshare designed for streaming video games and
-accepting remote inputs.
+accepting remote inputs.<br>
 There will be ansible instructions which can be executed inside into any virtual environment. This will
 be a plugin which complements the project [P2PRC](https://p2prc.akilan.io)
 
@@ -46,7 +46,7 @@ https://github.com/Akilan1999/laplace/tree/keyboard_mouse
 
 
 ### Installation required to share keyboard and mouse
-Currently, you can either use [x2x](https://github.com/dottedmag/x2x) or [Barrier KVM]()
+Currently, you can either use [x2x](https://github.com/dottedmag/x2x) or [Barrier KVM]()<br>
 We need to ensure that the client has SSH client installed or Barrierc.
 
 #### What is x2x?
@@ -113,7 +113,7 @@ go build .
 
 ## Program Execution
 
-Executing this project basically serves an HTTP server that will host the frontend and the WebSocket implementation.
+Executing this project basically serves an HTTP server that will host the frontend and the WebSocket implementation.<br>
 Note that you sometimes need to run HTTPs in order for browser to connect to websocket.
 
 ```bash
@@ -140,7 +140,7 @@ $ ./laplace --help
     	Use TLS
 ```
 
-By default, you can run the executable without any argument to listen to TLS port 443.
+By default, you can run the executable without any argument to listen to TLS port 443.<br>
 A self-signed certificate files are provided to ease up development. If you want to run 
 with barrier KVM. Run as non-root. 
 
@@ -171,7 +171,7 @@ cd /path/.local/share/Steam/steamapps/common/X-Plane\ 11/
 ```bash
 sh run.sh <IPV6 or Public IPV4 address of server>
 ```
-Note: This script starts the server using the port 8888 by default
+Note: This script starts the server using the port 8888 by default<br>
 The 2 steps below are if you want to start them command by command 
 
 ### Starting server
@@ -185,7 +185,7 @@ $ ./laplace -tls -addr 0.0.0.0:8888
 ./laplace -headless -addr <public ip address of server> 
 ```
 
-You can then open https://localhost:8888/ to view Laplace page.
+You can then open https://localhost:8888/ to view Laplace page.<br>
 You may need to add certificate exceptions. In Chrome, you can type `thisisunsafe`.
 
 
