@@ -147,7 +147,7 @@ with barrier KVM. Run as non-root.
 ### Starting game when screen-share is triggered
 This requires creating a bash script to trigger when the screenshare begins.
 #### Ex: Start X-Plane 11
-Let's call this script xplane11.sh
+Let's call this script `xplane11.sh`
 ```bash
 # Navigating to the directory where X-Plane11 is present 
 cd /path/.local/share/Steam/steamapps/common/X-Plane\ 11/
