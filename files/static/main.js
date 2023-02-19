@@ -149,6 +149,9 @@ function initUI() {
     LaplaceVar.ui.SSHPassword = document.getElementById('SSHPassword')
     LaplaceVar.headless = { result :"0"};
 
+    //getting server hostname
+    getServerIPandHostname()
+
     LaplaceVar.ui.joinForm.onsubmit = async e => {
         e.preventDefault();
         LaplaceVar.roomID = LaplaceVar.ui.inputRoomID.value;
@@ -198,9 +201,6 @@ function initUI() {
         const pcOption = JSON.parse(LaplaceVar.ui.inputRTPPeerConnectionOption.value);
         return startStream(mediaOption, pcOption);
     }
-
-    //getting server hostname
-    getServerIPandHostname()
 
     //getting SSHPassword
     getSSHPassword()
