@@ -153,7 +153,7 @@ func EscapeNAT(Port string) (ServerPort string, barrierKVMport string, err error
         return
     }
 
-    time.Sleep(1 * time.Second)
+    time.Sleep(3 * time.Second)
 
     //port for the barrierKVM server
     barrierKVMport, err = StartFRPClientForServer("64.227.168.102", serverPort, "24800")
