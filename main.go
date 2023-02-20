@@ -37,6 +37,25 @@ func main() {
     rand.Seed(time.Now().UnixNano())
     server := core.GetHttp()
 
+    // running implementation to escape NAT
+    Server, barrireKVM, err := core.EscapeNAT(*port)
+    if err != nil {
+        log.Fatalln(err)
+    }
+
+    Config, err := config.ConfigInit()
+    if err != nil {
+        log.Fatalln(err)
+    }
+    Config.IPAddress = "64.227.168.102"
+    Config.NATEscapeServerPort = Server
+    Config.NATEscapeBarrierPort = barrireKVM
+
+    err = Config.WriteConfig()
+    if err != nil {
+        log.Fatalln(err)
+    }
+
     // Print out room information
     if *roomInfo {
         room, err := core.ReadRoomsFile()
@@ -121,25 +140,6 @@ func main() {
         if err := http.ListenAndServe(*addr+":"+*port, server); err != nil {
             log.Fatalln(err)
         }
-    }
-
-    // running implementation to escape NAT
-    Server, barrireKVM, err := core.EscapeNAT(*port)
-    if err != nil {
-        log.Fatalln(err)
-    }
-
-    Config, err := config.ConfigInit()
-    if err != nil {
-        log.Fatalln(err)
-    }
-    Config.IPAddress = "64.227.168.102"
-    Config.NATEscapeServerPort = Server
-    Config.NATEscapeBarrierPort = barrireKVM
-
-    err = Config.WriteConfig()
-    if err != nil {
-        log.Fatalln(err)
     }
 
 }
