@@ -70,7 +70,9 @@ func BroadcastServerToBackend() error {
 	form.Add("Platform", gameSession.Server.Platform)
 	form.Add("RAM", strconv.Itoa(int(gameSession.Server.RAM)))
 	form.Add("Disk", strconv.Itoa(int(gameSession.Server.Disk)))
-	form.Add("GPU", gameSession.Server.GPU.Gpu.GpuName)
+	if gameSession.Server.GPU != nil {
+		form.Add("GPU", gameSession.Server.GPU.Gpu.GpuName)
+	}
 	form.Add("CPU", gameSession.Server.CPU)
 
 	req, err := http.NewRequest("POST", config.BackendURL+"AddGameSession", strings.NewReader(form.Encode()))
