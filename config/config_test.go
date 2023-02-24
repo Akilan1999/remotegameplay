@@ -1,19 +1,19 @@
 package config
 
 import (
-	"testing"
+    "testing"
 )
 
 func TestConfigInit(t *testing.T) {
-	_, err := ConfigInit()
-	if err != nil {
-		t.Error(err)
-	}
+    _, err := ConfigRead()
+    if err != nil {
+        t.Error(err)
+    }
 }
 
 func TestSetDefaults(t *testing.T) {
-	err := SetDefaults()
-	if err != nil {
-		t.Error(err)
-	}
+    err := SetDefaults()
+    if err != nil {
+        t.Error(err)
+    }
 }

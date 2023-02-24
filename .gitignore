@@ -4,3 +4,6 @@ remotegameplay
 room.json
 laplace
 scripts/
+server/
+client/
+p2p/
