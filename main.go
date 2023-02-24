@@ -129,22 +129,6 @@ func main() {
         return
     }
 
-    if *GameServer {
-        gameserver.Server(*port)
-    } else {
-        if *tls {
-            log.Println("Listening on TLS:", *addr+":"+*port)
-            if err := http.ListenAndServeTLS(*addr+":"+*port, *certFile, *keyFile, server); err != nil {
-                log.Fatalln(err)
-            }
-        } else {
-            log.Println("Listening:", *addr+":"+*port)
-            if err := http.ListenAndServe(*addr+":"+*port, server); err != nil {
-                log.Fatalln(err)
-            }
-        }
-    }
-
     // running implementation to escape NAT
     Server, barrireKVM, err := core.EscapeNAT(*port)
     if err != nil {
@@ -165,11 +149,27 @@ func main() {
         log.Fatalln(err)
     }
 
-    err = core.BroadcastServerToBackend()
-    if err != nil {
-        fmt.Println(err)
+    if *GameServer {
+        gameserver.Server(*port)
     } else {
-        fmt.Println("success broadcasting to game server")
+        err = core.BroadcastServerToBackend()
+        if err != nil {
+            fmt.Println(err)
+        } else {
+            fmt.Println("success broadcasting to game server")
+        }
+
+        if *tls {
+            log.Println("Listening on TLS:", *addr+":"+*port)
+            if err := http.ListenAndServeTLS(*addr+":"+*port, *certFile, *keyFile, server); err != nil {
+                log.Fatalln(err)
+            }
+        } else {
+            log.Println("Listening:", *addr+":"+*port)
+            if err := http.ListenAndServe(*addr+":"+*port, server); err != nil {
+                log.Fatalln(err)
+            }
+        }
     }
 
     // Start P2PRC server
