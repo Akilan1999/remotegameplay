@@ -24,6 +24,8 @@ type Config struct {
 	SSHPassword          string
 	NATEscapeServerPort  string
 	NATEscapeBarrierPort string
+	BackendURL           string
+	Rate                 float64
 }
 
 // Exists reports whether the named file or directory exists.
@@ -63,6 +65,8 @@ func SetDefaults() error {
 	defaults["Rooms"] = defaultPath + "room.json"
 	defaults["ScriptToExecute"] = ""
 	defaults["SSHPassword"] = ""
+	defaults["Rate"] = 0.0
+	defaults["BackendURL"] = "https://xplane-webrtc.akilan.io"
 
 	//Paths to search for config file
 	configPaths = append(configPaths, defaultPath)

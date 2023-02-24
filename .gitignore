@@ -4,6 +4,10 @@ remotegameplay
 room.json
 laplace
 scripts/
-server/
+server/docker/
 client/
 p2p/
+# Ignore SQLite database created
+xplane11-webRTC.db
+
+
