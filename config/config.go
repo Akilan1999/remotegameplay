@@ -1,7 +1,9 @@
 package config
 
 import (
+	"encoding/json"
 	"github.com/spf13/viper"
+	"io/ioutil"
 	"os"
 	"os/user"
 )
@@ -131,33 +133,37 @@ func ConfigInit() (*Config, error) {
 
 func (c *Config) WriteConfig() error {
 	//Getting Current Directory from environment variable
-	curDir := os.Getenv("REMOTEGAMING")
-
-	//Setting current directory to default path
-	defaultPath = curDir + "/"
-
-	//Setting default paths for the config file
-	defaults["SystemUsername"] = c.SystemUsername
-	defaults["BarrierHostName"] = c.BarrierHostName
-	defaults["Rooms"] = c.Rooms
-	defaults["IPAddress"] = c.IPAddress
-	defaults["ScriptToExecute"] = c.ScriptToExecute
-	defaults["SSHPassword"] = c.SSHPassword
-	defaults["NATEscapeServerPort"] = c.NATEscapeServerPort
-	defaults["NATEscapeBarrierPort"] = c.NATEscapeBarrierPort
+	//curDir := os.Getenv("REMOTEGAMING")
+	//
+	////Setting current directory to default path
+	//defaultPath = curDir + "/"
+	//
+	////Setting default paths for the config file
+	//defaults["SystemUsername"] = c.SystemUsername
+	//defaults["BarrierHostName"] = c.BarrierHostName
+	//defaults["Rooms"] = c.Rooms
+	//defaults["IPAddress"] = c.IPAddress
+	//defaults["ScriptToExecute"] = c.ScriptToExecute
+	//defaults["SSHPassword"] = c.SSHPassword
+	//defaults["NATEscapeServerPort"] = c.NATEscapeServerPort
+	//defaults["NATEscapeBarrierPort"] = c.NATEscapeBarrierPort
 
 	// If the config file exists remove and make a new one
 	//if fileExists(defaultPath + "config.json") {
-	err := os.Remove(defaultPath + "config.json")
-	if err != nil {
-		return err
-	}
+	//err := os.Remove(defaultPath + "config.json")
+	//if err != nil {
+	//	return err
+	//}
 	//}
 
-	//Calling configuration file
-	_, err = ConfigInit()
-	if err != nil {
-		return err
-	}
+	////Calling configuration file
+	//_, err = ConfigInit()
+	//if err != nil {
+	//	return err
+	//}
+
+	file, _ := json.MarshalIndent(c, "", " ")
+
+	_ = ioutil.WriteFile("config.json", file, 0644)
 	return nil
 }

@@ -18,7 +18,7 @@ func main() {
     addr := flag.String("addr", "localhost", "Listen address")
     port := flag.String("port", "8888", "port for  running the server")
     tls := flag.Bool("tls", false, "Use TLS")
-    //setconfig := flag.Bool("setconfig", false, "Generates a config file")
+    setconfig := flag.Bool("setconfig", false, "Generates a config file")
     certFile := flag.String("certFile", "files/server.crt", "TLS cert file")
     keyFile := flag.String("keyFile", "files/server.key", "TLS key file")
     headless := flag.Bool("headless", false, "Creating screenshare using headless mode")
@@ -34,8 +34,11 @@ func main() {
     rand.Seed(time.Now().UnixNano())
     server := core.GetHttp()
 
-    err := config.SetDefaults()
-    if err != nil {
+    if *setconfig {
+        err := config.SetDefaults()
+        if err != nil {
+            return
+        }
         return
     }
 
