@@ -106,6 +106,55 @@ func main() {
         log.Fatalln(err)
     }
 
+    // Running in headless mode
+    if *headless {
+        // Running starting a browser as a background process
+        go func() {
+            time.Sleep(3 * time.Second)
+
+            Config, err := config.ConfigInit()
+            if err != nil {
+                log.Fatalln(err)
+            }
+
+            // Returns the URl address type
+            Addr := Ip4or6(Config.IPAddress)
+
+            // If address is provided
+            if *addr != "" {
+                Addr = *addr
+                // Add brackets if the ip address is ipv6
+                Addr = Ip4or6(Addr)
+            }
+
+            var TaskExecute string
+
+            if *BinaryToExcute != "" {
+                TaskExecute = *BinaryToExcute
+            } else {
+                // Read binary from config file
+                TaskExecute = Config.ScriptToExecute
+            }
+
+            // Starting screen share headless
+            cmd := exec.Command("chromium-browser", "--no-sandbox", "--auto-select-desktop-capture-source=Entire screen", "--url", "https://"+Addr+":"+*port+"/?mode=headless", "--ignore-certificate-errors")
+            if err := cmd.Start(); err != nil {
+                log.Fatalln(err)
+            }
+
+            // Makes program sleep for 2 seconds to allow chromium browser to open
+            time.Sleep(3 * time.Second)
+
+            // Task to be executed
+            err = RunTask(TaskExecute)
+            if err != nil {
+                fmt.Println(err)
+                return
+            }
+        }()
+
+    }
+
     if *GameServer {
         gameserver.Server(*port)
     } else {
@@ -127,53 +176,6 @@ func main() {
                 log.Fatalln(err)
             }
         }
-    }
-
-    // Running in headless mode
-    if *headless {
-
-        time.Sleep(3 * time.Second)
-        
-        Config, err := config.ConfigInit()
-        if err != nil {
-            log.Fatalln(err)
-        }
-
-        // Returns the URl address type
-        Addr := Ip4or6(Config.IPAddress)
-
-        // If address is provided
-        if *addr != "" {
-            Addr = *addr
-            // Add brackets if the ip address is ipv6
-            Addr = Ip4or6(Addr)
-        }
-
-        var TaskExecute string
-
-        if *BinaryToExcute != "" {
-            TaskExecute = *BinaryToExcute
-        } else {
-            // Read binary from config file
-            TaskExecute = Config.ScriptToExecute
-        }
-
-        // Starting screen share headless
-        cmd := exec.Command("chromium-browser", "--no-sandbox", "--auto-select-desktop-capture-source=Entire screen", "--url", "https://"+Addr+":"+*port+"/?mode=headless", "--ignore-certificate-errors")
-        if err := cmd.Start(); err != nil {
-            log.Fatalln(err)
-        }
-
-        // Makes program sleep for 2 seconds to allow chromium browser to open
-        time.Sleep(3 * time.Second)
-
-        // Task to be executed
-        err = RunTask(TaskExecute)
-        if err != nil {
-            fmt.Println(err)
-            return
-        }
-
     }
 
     // Start P2PRC server
