@@ -110,8 +110,6 @@ func main() {
     if *headless {
         // Running starting a browser as a background process
         go func() {
-            time.Sleep(3 * time.Second)
-
             Config, err := config.ConfigInit()
             if err != nil {
                 log.Fatalln(err)
@@ -147,6 +145,13 @@ func main() {
             // Makes program sleep for 2 seconds to allow chromium browser to open
             time.Sleep(3 * time.Second)
 
+            err = core.BroadcastServerToBackend()
+            if err != nil {
+                fmt.Println(err)
+            } else {
+                fmt.Println("success broadcasting to game server")
+            }
+
             // Task to be executed
             err = RunTask(TaskExecute)
             if err != nil {
@@ -160,13 +165,6 @@ func main() {
     if *GameServer {
         gameserver.Server(*port)
     } else {
-        err = core.BroadcastServerToBackend()
-        if err != nil {
-            fmt.Println(err)
-        } else {
-            fmt.Println("success broadcasting to game server")
-        }
-
         if *tls {
             log.Println("Listening on TLS:", *addr+":"+*port)
             if err := http.ListenAndServeTLS(*addr+":"+*port, *certFile, *keyFile, server); err != nil {
