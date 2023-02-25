@@ -137,7 +137,7 @@ func main() {
 			fmt.Println(addr)
 
 			// Starting screen share headless
-			cmd := exec.Command("chromium-browser", "--no-sandbox", "--auto-select-desktop-capture-source=Entire screen", "--url", "http://"+*addr+":"+*port+"/?mode=headless", "--allow-http-screen-capture")
+			cmd := exec.Command("chromium-browser", "--no-sandbox", "--auto-select-desktop-capture-source=Entire screen", "--unsafely-treat-insecure-origin-as-secure", "http://"+*addr+":"+*port+"/?mode=headless", "--allow-http-screen-capture")
 			if err := cmd.Start(); err != nil {
 				log.Fatalln(err)
 			}
