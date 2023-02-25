@@ -37,7 +37,7 @@ func BroadcastServerToBackend() error {
 	respIpv4orIPv6 := Ip4or6(config.IPAddress)
 
 	// Adding game session information
-	respIpv4orIPv6 = "https://" + respIpv4orIPv6
+	respIpv4orIPv6 = "http://" + respIpv4orIPv6
 
 	// Get room information
 	_, err = ReadRoomsFile()

@@ -3,8 +3,10 @@ package server
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 // Server Starts the server for the client side
@@ -91,7 +93,7 @@ func Server(port string) error {
 				// TODO redirect to homepage
 				// Set client Cookie as Session ID
 				// To be changed when we use HTTPS
-				c.SetCookie("SessionID", session.SessionKey, 3600, "/", "localhost", false, true)
+				c.SetCookie("SessionID", session.SessionKey, 3600, "/", "*", false, true)
 				// redirects to the home page
 				//c.Redirect(http.StatusFound, "/")
 
@@ -178,6 +180,8 @@ func Server(port string) error {
 		}
 	})
 
+	go CheckIfGameSessionIsActiveOrRemove(connect)
+
 	// Run gin server on the specified port
 	err = r.Run(":" + port)
 	if err != nil {
@@ -185,4 +189,30 @@ func Server(port string) error {
 	}
 
 	return nil
+}
+
+func CheckIfGameSessionIsActiveOrRemove(gorm *gorm.DB) {
+	fmt.Println("here")
+	for {
+		time.Sleep(2 * time.Second)
+		Gamesessions, err := DisplayGameSessions(gorm)
+		if err != nil {
+			return
+		}
+
+		for i, _ := range Gamesessions {
+			req, err := http.NewRequest("GET", Gamesessions[i].Link, nil)
+			// Sending request to the backend server
+			client := &http.Client{}
+			_, err = client.Do(req)
+			if err != nil {
+				// remove from database game session
+				_, err = RemoveTableGameSessionID(gorm, Gamesessions[i].GameSessionID)
+				if err != nil {
+					fmt.Println(err)
+					return
+				}
+			}
+		}
+	}
 }

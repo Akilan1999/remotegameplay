@@ -81,6 +81,15 @@ func RemoveTableGameSession(db *gorm.DB) (*gorm.DB, error) {
 	return db, nil
 }
 
+func RemoveTableGameSessionID(db *gorm.DB, id string) (*gorm.DB, error) {
+	var gameSession GameSession
+	// Creates table of type GameSessions
+	db.Where("game_session_id = ?", id).Delete(&gameSession)
+	// returns variable DB of type *gorm.DB and error
+	// which is nil at the current moment
+	return db, nil
+}
+
 // DisplayGameSessions Returns all the rows of all the game session information
 // to display
 func DisplayGameSessions(db *gorm.DB) ([]*GameSession, error) {
