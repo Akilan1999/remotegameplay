@@ -1,6 +1,7 @@
 package server
 
 import (
+	"crypto/tls"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -192,7 +193,6 @@ func Server(port string) error {
 }
 
 func CheckIfGameSessionIsActiveOrRemove(gorm *gorm.DB) {
-	fmt.Println("here")
 	for {
 		time.Sleep(2 * time.Second)
 		Gamesessions, err := DisplayGameSessions(gorm)
@@ -200,6 +200,7 @@ func CheckIfGameSessionIsActiveOrRemove(gorm *gorm.DB) {
 			return
 		}
 
+		http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
 		for i, _ := range Gamesessions {
 			req, err := http.NewRequest("GET", Gamesessions[i].Link, nil)
 			// Sending request to the backend server
