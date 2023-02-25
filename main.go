@@ -15,7 +15,7 @@ import (
 )
 
 func main() {
-    addr := flag.String("addr", "localhost", "Listen address")
+    addr := flag.String("addr", "0.0.0.0", "Listen address")
     port := flag.String("port", "8888", "port for  running the server")
     tls := flag.Bool("tls", false, "Use TLS")
     setconfig := flag.Bool("setconfig", false, "Generates a config file")
