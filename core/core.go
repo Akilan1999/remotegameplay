@@ -40,14 +40,14 @@ func BroadcastServerToBackend() error {
 	respIpv4orIPv6 = "http://" + respIpv4orIPv6
 
 	// Get room information
-	_, err = ReadRoomsFile()
+	room, err := ReadRoomsFile()
 	if err != nil {
 		return err
 	}
 
 	// Game session url
 	//+ file.ID
-	gameSession.Link = respIpv4orIPv6 + ":" + config.NATEscapeServerPort + "/?id="
+	gameSession.Link = respIpv4orIPv6 + ":" + config.NATEscapeServerPort + "/?id=" + room.ID
 	// Rate for the game session
 	gameSession.Rate = config.Rate
 	// Server specs to struct GameSession
