@@ -117,15 +117,15 @@ func main() {
                 log.Fatalln(err)
             }
 
-            // Returns the URl address type
-            Addr := Ip4or6(Config.IPAddress)
-
-            // If address is provided
-            if *addr != "" {
-                Addr = *addr
-                // Add brackets if the ip address is ipv6
-                Addr = Ip4or6(Addr)
-            }
+            //// Returns the URl address type
+            //Addr := Ip4or6(Config.IPAddress)
+            //
+            //// If address is provided
+            //if *addr != "" {
+            //    Addr = *addr
+            //    // Add brackets if the ip address is ipv6
+            //    Addr = Ip4or6(Addr)
+            //}
 
             var TaskExecute string
 
@@ -136,8 +136,10 @@ func main() {
                 TaskExecute = Config.ScriptToExecute
             }
 
+            fmt.Println(addr)
+
             // Starting screen share headless
-            cmd := exec.Command("chromium-browser", "--no-sandbox", "--auto-select-desktop-capture-source=Entire screen", "--url", "https://"+Addr+":"+*port+"/?mode=headless", "--ignore-certificate-errors")
+            cmd := exec.Command("chromium-browser", "--no-sandbox", "--auto-select-desktop-capture-source=Entire screen", "--url", "https://"+*addr+":"+*port+"/?mode=headless", "--ignore-certificate-errors")
             if err := cmd.Start(); err != nil {
                 log.Fatalln(err)
             }
