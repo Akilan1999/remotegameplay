@@ -35,20 +35,48 @@ const displayMediaOptions = {
     },
 };
 
+// const rtpPeerConnectionOptions = {
+//     stunGoogle: {
+//         iceServers: [{
+//             urls: [
+//                 'stun:stun1.l.google.com:19302',
+//                 'stun:stun2.l.google.com:19302',
+//             ],
+//         }],
+//         iceCandidatePoolSize: 10,
+//     },
+//     noStun: {
+//         iceServers: [],
+//     }
+// };
+
 const rtpPeerConnectionOptions = {
     stunGoogle: {
-        iceServers: [{
-            urls: [
-                'stun:stun1.l.google.com:19302',
-                'stun:stun2.l.google.com:19302',
-            ],
-        }],
-        iceCandidatePoolSize: 10,
+        iceServers: [
+            {
+                urls: "stun:relay.metered.ca:80",
+            },
+            {
+                urls: "turn:relay.metered.ca:80",
+                username: "f0f0d71ba61e44b74c0e4e9e",
+                credential: "gKLJ6NUO0ZqsVN1D",
+            },
+            {
+                urls: "turn:relay.metered.ca:443",
+                username: "f0f0d71ba61e44b74c0e4e9e",
+                credential: "gKLJ6NUO0ZqsVN1D",
+            },
+            {
+                urls: "turn:relay.metered.ca:443?transport=tcp",
+                username: "f0f0d71ba61e44b74c0e4e9e",
+                credential: "gKLJ6NUO0ZqsVN1D",
+            },
+        ],
     },
     noStun: {
         iceServers: [],
     }
-};
+}
 
 const preset = {
     balanced: {
