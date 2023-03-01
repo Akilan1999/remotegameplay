@@ -2,7 +2,6 @@ package config
 
 import (
 	"encoding/json"
-	"github.com/spf13/viper"
 	"io/ioutil"
 	"os"
 	"os/user"
@@ -27,7 +26,9 @@ type Config struct {
 	NATEscapeServerPort  string
 	NATEscapeBarrierPort string
 	BackendURL           string
+	BrowserCommand       string
 	Rate                 float64
+	ScreenName           string
 }
 
 // Exists reports whether the named file or directory exists.
@@ -44,10 +45,11 @@ func fileExists(name string) bool {
 // make install
 func SetDefaults() error {
 	//Getting Current Directory from environment variable
-	curDir := os.Getenv("REMOTEGAMING")
+	//curDir := os.Getenv("REMOTEGAMING")
 
 	//Setting current directory to default path
-	defaultPath = curDir + "/"
+	defaultPath, _ = os.Getwd()
+	defaultPath = defaultPath + "/"
 
 	// Get system username
 	user, err := user.Current()
@@ -61,72 +63,104 @@ func SetDefaults() error {
 		return err
 	}
 
-	//Setting default paths for the config file
-	defaults["SystemUsername"] = user.Username
-	defaults["BarrierHostName"] = name
-	defaults["Rooms"] = defaultPath + "room.json"
-	defaults["ScriptToExecute"] = ""
-	defaults["SSHPassword"] = ""
-	defaults["Rate"] = 0.0
-	defaults["BackendURL"] = "https://xplane-webrtc.akilan.io"
+	var c Config
 
-	//Paths to search for config file
-	configPaths = append(configPaths, defaultPath)
+	c.BrowserCommand = "chromium-browser"
+	c.SystemUsername = user.Username
+	c.Rooms = defaultPath + "room.json"
+	c.BarrierHostName = name
+	c.ScriptToExecute = ""
+	c.SSHPassword = ""
+	c.Rate = 0.0
+	c.BackendURL = "https://xplane-webrtc.akilan.io"
+	c.ScreenName = "Entire screen"
 
-	//Create rooms.json file
-	os.Create(defaultPath + "room.json")
+	file, _ := json.MarshalIndent(c, "", " ")
 
-	// If the config file exists remove and make a new one
-	if fileExists(defaultPath + "config.json") {
-		err = os.Remove(defaultPath + "config.json")
-		if err != nil {
-			return err
-		}
-	}
+	_ = ioutil.WriteFile(configFile, file, 0644)
 
-	//Calling configuration file
-	_, err = ConfigInit()
-	if err != nil {
-		return err
-	}
+	////Setting default paths for the config file
+	//defaults["SystemUsername"] = user.Username
+	//defaults["BarrierHostName"] = name
+	//defaults["Rooms"] = defaultPath + "room.json"
+	//defaults["ScriptToExecute"] = ""
+	//defaults["SSHPassword"] = ""
+	//defaults["Rate"] = 0.0
+	//defaults["BackendURL"] = "https://xplane-webrtc.akilan.io"
+	//defaults["BrowserCommand"] = "chromium-browser"
+	//
+	////Paths to search for config file
+	//configPaths = append(configPaths, defaultPath)
+	//
+	////Create rooms.json file
+	//os.Create(defaultPath + "room.json")
+	//
+	//// If the config file exists remove and make a new one
+	//if fileExists(defaultPath + "config.json") {
+	//	err = os.Remove(defaultPath + "config.json")
+	//	if err != nil {
+	//		return err
+	//	}
+	//}
+	//
+	////Calling configuration file
+	//_, err = ConfigInit()
+	//if err != nil {
+	//	return err
+	//}
 	return nil
 }
 
 func ConfigInit() (*Config, error) {
 
-	curDir := os.Getenv("REMOTEGAMING")
-	//Setting current directory to default path
-	defaultPath = curDir + "/"
-	//Paths to search for config file
-	configPaths = append(configPaths, defaultPath)
+	//curDir := os.Getenv("REMOTEGAMING")
+	////Setting current directory to default path
+	//defaultPath = curDir + "/"
+	////Paths to search for config file
+	//configPaths = append(configPaths, defaultPath)
+	//
+	////Add all possible configurations paths
+	//for _, v := range configPaths {
+	//	viper.AddConfigPath(v)
+	//}
+	//
+	////Read config file
+	//if err := viper.ReadInConfig(); err != nil {
+	//	// If the error thrown is config file not found
+	//	//Sets default configuration to viper
+	//	for k, v := range defaults {
+	//		viper.SetDefault(k, v)
+	//	}
+	//
+	//	viper.SetConfigName(configName)
+	//	viper.SetConfigFile(configFile)
+	//	viper.SetConfigType(configType)
+	//
+	//	if err = viper.WriteConfig(); err != nil {
+	//		return nil, err
+	//	}
+	//}
+	//
+	//// Adds configuration to the struct
+	//var config Config
+	//if err := viper.Unmarshal(&config); err != nil {
+	//	return nil, err
+	//}
 
-	//Add all possible configurations paths
-	for _, v := range configPaths {
-		viper.AddConfigPath(v)
-	}
-
-	//Read config file
-	if err := viper.ReadInConfig(); err != nil {
-		// If the error thrown is config file not found
-		//Sets default configuration to viper
-		for k, v := range defaults {
-			viper.SetDefault(k, v)
-		}
-
-		viper.SetConfigName(configName)
-		viper.SetConfigFile(configFile)
-		viper.SetConfigType(configType)
-
-		if err = viper.WriteConfig(); err != nil {
-			return nil, err
-		}
-	}
-
-	// Adds configuration to the struct
-	var config Config
-	if err := viper.Unmarshal(&config); err != nil {
+	// Open our jsonFile
+	jsonFile, err := os.Open(configFile)
+	// if we os.Open returns an error then handle it
+	if err != nil {
 		return nil, err
 	}
+
+	// defer the closing of our jsonFile so that we can parse it later on
+	defer jsonFile.Close()
+
+	byteValue, _ := ioutil.ReadAll(jsonFile)
+
+	var config Config
+	json.Unmarshal(byteValue, &config)
 
 	return &config, nil
 }

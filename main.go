@@ -110,7 +110,7 @@ func main() {
 	if *headless {
 		// Running starting a browser as a background process
 		go func() {
-			Config, err := config.ConfigInit()
+			Config, err = config.ConfigInit()
 			if err != nil {
 				log.Fatalln(err)
 			}
@@ -134,10 +134,8 @@ func main() {
 				TaskExecute = Config.ScriptToExecute
 			}
 
-			fmt.Println(addr)
-
 			// Starting screen share headless
-			cmd := exec.Command("chromium-browser", "--no-sandbox", "--auto-select-desktop-capture-source=Entire screen", "--url", "https://"+*addr+":"+*port+"/?mode=headless", "--ignore-certificate-errors")
+			cmd := exec.Command(Config.BrowserCommand, "--no-sandbox", "--auto-select-desktop-capture-source="+Config.ScreenName, "--url", "https://"+*addr+":"+*port+"/?mode=headless", "--ignore-certificate-errors")
 			if err := cmd.Start(); err != nil {
 				log.Fatalln(err)
 			}
