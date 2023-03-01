@@ -8,7 +8,7 @@ import (
 // EscapeNAT Func to escape NAT
 // - 1 port for server
 // - 2 port for barrierKVM
-func EscapeNAT(Port string) (ServerPort string, barrierKVMport string, err error) {
+func EscapeNAT(ScreenSharePort, GameplayServerPort string) (ServerPort string, ScreensharePort string, barrierKVMport string, err error) {
     // Get free port from P2PRC server node
     serverPort, err := frp.GetFRPServerPort("http://64.227.168.102:8088")
 
@@ -19,7 +19,22 @@ func EscapeNAT(Port string) (ServerPort string, barrierKVMport string, err error
     time.Sleep(1 * time.Second)
 
     // port for the remote gameplay server
-    ServerPort, err = frp.StartFRPClientForServer("64.227.168.102", serverPort, Port)
+    ServerPort, err = frp.StartFRPClientForServer("64.227.168.102", serverPort, GameplayServerPort)
+    if err != nil {
+        return
+    }
+
+    // Get free port from P2PRC server node
+    ScreensharePort, err = frp.GetFRPServerPort("http://64.227.168.102:8088")
+
+    if err != nil {
+        return
+    }
+
+    time.Sleep(1 * time.Second)
+
+    // port for the screenshare port
+    ScreensharePort, err = frp.StartFRPClientForServer("64.227.168.102", ScreensharePort, ScreenSharePort)
     if err != nil {
         return
     }

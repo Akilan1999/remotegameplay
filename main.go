@@ -16,7 +16,7 @@ import (
 
 func main() {
 	addr := flag.String("addr", "0.0.0.0", "Listen address")
-	port := flag.String("port", "8888", "port for  running the server")
+	//port := flag.String("port", "8888", "port for  running the server")
 	tls := flag.Bool("tls", false, "Use TLS")
 	setconfig := flag.Bool("setconfig", false, "Generates a config file")
 	certFile := flag.String("certFile", "files/server.crt", "TLS cert file")
@@ -25,9 +25,10 @@ func main() {
 	roomInfo := flag.Bool("roomInfo", false, "Getting room id of headless server")
 	killServer := flag.Bool("killServer", false, "Kills the laplace")
 	killChromium := flag.Bool("killChromium", false, "Kills all chromuim")
-	BinaryToExcute := flag.String("BinaryToExecute", "", "Providing path (i.e Absolute path) of binary to execute")
+	BinaryToExecute := flag.String("BinaryToExecute", "", "Providing path (i.e Absolute path) of binary to execute")
 	GameServer := flag.Bool("GameServer", false, "Starts the game server by default")
 	Migrate := flag.Bool("Migrate", false, "Sets up the tables for the Sqlite database")
+	BothServers := flag.Bool("BothServers", false, "Starts the Gameserver and screenshare. Also ensures the screenshare can broadcast the availability to the game server")
 
 	flag.Parse()
 
@@ -86,24 +87,56 @@ func main() {
 		return
 	}
 
-	// running implementation to escape NAT
-	Server, barrireKVM, err := core.EscapeNAT(*port)
-	if err != nil {
-		log.Fatalln(err)
-	}
-
 	Config, err := config.ConfigInit()
 	if err != nil {
 		log.Fatalln(err)
 	}
 
+	// running implementation to escape NAT
+	GameServerPort, ScreenSharePort, barrireKVM, err := core.EscapeNAT(Config.InternalScreenSharePort, Config.InternalGameServerPort)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
 	Config.IPAddress = "64.227.168.102"
-	Config.NATEscapeServerPort = Server
+	Config.NATEscapeGameServerPort = GameServerPort
+	Config.NATEscapeScreenSharePort = ScreenSharePort
 	Config.NATEscapeBarrierPort = barrireKVM
 
 	err = Config.WriteConfig()
 	if err != nil {
 		log.Fatalln(err)
+	}
+
+	// If both server and screenshare have be triggered (first set the according flags to true)
+	if *BothServers {
+		*headless = true
+		*tls = true
+		*GameServer = true
+	}
+
+	if *GameServer {
+		go gameserver.Server(Config.InternalGameServerPort)
+	}
+
+	if !*GameServer || *BothServers {
+		if *tls {
+			log.Println("Listening on TLS:", *addr+":"+Config.InternalScreenSharePort)
+			go http.ListenAndServeTLS(*addr+":"+Config.InternalScreenSharePort, *certFile, *keyFile, server)
+		} else {
+			log.Println("Listening:", *addr+":"+Config.InternalScreenSharePort)
+			go http.ListenAndServe(*addr+":"+Config.InternalScreenSharePort, server)
+		}
+	}
+
+	// If both server selected set the remote Gameserver to local now.
+	if *BothServers {
+		Config.BackendURL = "http://" + Config.IPAddress + ":" + Config.NATEscapeGameServerPort + "/"
+		err = Config.WriteConfig()
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
 	}
 
 	// Running in headless mode
@@ -127,15 +160,15 @@ func main() {
 
 			var TaskExecute string
 
-			if *BinaryToExcute != "" {
-				TaskExecute = *BinaryToExcute
+			if *BinaryToExecute != "" {
+				TaskExecute = *BinaryToExecute
 			} else {
 				// Read binary from config file
 				TaskExecute = Config.ScriptToExecute
 			}
 
 			// Starting screen share headless
-			cmd := exec.Command(Config.BrowserCommand, "--no-sandbox", "--auto-select-desktop-capture-source="+Config.ScreenName, "--url", "https://"+*addr+":"+*port+"/?mode=headless", "--ignore-certificate-errors")
+			cmd := exec.Command(Config.BrowserCommand, "--no-sandbox", "--auto-select-desktop-capture-source="+Config.ScreenName, "--url", "https://"+*addr+":"+Config.InternalScreenSharePort+"/?mode=headless", "--ignore-certificate-errors")
 			if err := cmd.Start(); err != nil {
 				log.Fatalln(err)
 			}
@@ -160,20 +193,8 @@ func main() {
 
 	}
 
-	if *GameServer {
-		gameserver.Server(*port)
-	} else {
-		if *tls {
-			log.Println("Listening on TLS:", *addr+":"+*port)
-			if err := http.ListenAndServeTLS(*addr+":"+*port, *certFile, *keyFile, server); err != nil {
-				log.Fatalln(err)
-			}
-		} else {
-			log.Println("Listening:", *addr+":"+*port)
-			if err := http.ListenAndServe(*addr+":"+*port, server); err != nil {
-				log.Fatalln(err)
-			}
-		}
+	for {
+
 	}
 
 	// Start P2PRC server

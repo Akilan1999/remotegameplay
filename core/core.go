@@ -1,6 +1,7 @@
 package core
 
 import (
+	"crypto/tls"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -47,7 +48,7 @@ func BroadcastServerToBackend() error {
 
 	// Game session url
 	//+ file.ID
-	gameSession.Link = respIpv4orIPv6 + ":" + config.NATEscapeServerPort + "/?id=" + room.ID
+	gameSession.Link = respIpv4orIPv6 + ":" + config.NATEscapeGameServerPort + "/?id=" + room.ID
 	// Rate for the game session
 	gameSession.Rate = config.Rate
 	// Server specs to struct GameSession
@@ -75,6 +76,7 @@ func BroadcastServerToBackend() error {
 	}
 	form.Add("CPU", gameSession.Server.CPU)
 
+	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
 	req, err := http.NewRequest("POST", config.BackendURL+"AddGameSession", strings.NewReader(form.Encode()))
 	if err != nil {
 		return err

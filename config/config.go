@@ -17,18 +17,21 @@ var (
 )
 
 type Config struct {
-	SystemUsername       string
-	BarrierHostName      string
-	Rooms                string
-	IPAddress            string
-	ScriptToExecute      string
-	SSHPassword          string
-	NATEscapeServerPort  string
-	NATEscapeBarrierPort string
-	BackendURL           string
-	BrowserCommand       string
-	Rate                 float64
-	ScreenName           string
+	SystemUsername           string
+	BarrierHostName          string
+	Rooms                    string
+	IPAddress                string
+	ScriptToExecute          string
+	SSHPassword              string
+	NATEscapeGameServerPort  string
+	NATEscapeScreenSharePort string
+	NATEscapeBarrierPort     string
+	BackendURL               string
+	BrowserCommand           string
+	Rate                     float64
+	ScreenName               string
+	InternalGameServerPort   string
+	InternalScreenSharePort  string
 }
 
 // Exists reports whether the named file or directory exists.
@@ -74,6 +77,8 @@ func SetDefaults() error {
 	c.Rate = 0.0
 	c.BackendURL = "https://xplane-webrtc.akilan.io"
 	c.ScreenName = "Entire screen"
+	c.InternalGameServerPort = "8088"
+	c.InternalScreenSharePort = "8888"
 
 	file, _ := json.MarshalIndent(c, "", " ")
 
@@ -179,7 +184,7 @@ func (c *Config) WriteConfig() error {
 	//defaults["IPAddress"] = c.IPAddress
 	//defaults["ScriptToExecute"] = c.ScriptToExecute
 	//defaults["SSHPassword"] = c.SSHPassword
-	//defaults["NATEscapeServerPort"] = c.NATEscapeServerPort
+	//defaults["NATEscapeGameServerPort"] = c.NATEscapeGameServerPort
 	//defaults["NATEscapeBarrierPort"] = c.NATEscapeBarrierPort
 
 	// If the config file exists remove and make a new one
