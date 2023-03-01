@@ -7,6 +7,7 @@ import (
 	"github.com/gorilla/websocket"
 	"io/ioutil"
 	"os"
+	"time"
 )
 
 type Room struct {
@@ -112,6 +113,7 @@ func (room *Room) writeToFile() error {
 
 // ReadRoomsFile Reads rooms file and return struct room id
 func ReadRoomsFile() (*Room, error) {
+	time.Sleep(3 * time.Second)
 	config, err := config.ConfigInit()
 	if err != nil {
 		return nil, err

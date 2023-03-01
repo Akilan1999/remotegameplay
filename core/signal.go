@@ -1,6 +1,7 @@
 package core
 
 import (
+	"crypto/tls"
 	"fmt"
 	"github.com/Akilan1999/remotegameplay/config"
 	"github.com/gorilla/websocket"
@@ -35,6 +36,7 @@ func sendHeartBeatWS(ticker *time.Ticker, conn *websocket.Conn, quit chan struct
 }
 
 func GetHttp() *http.ServeMux {
+	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
 	server := http.NewServeMux()
 
 	server.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("files/static"))))

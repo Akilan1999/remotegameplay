@@ -35,7 +35,9 @@ func BroadcastServerToBackend() error {
 
 	var gameSession GameSession
 
-	respIpv4orIPv6 := Ip4or6(config.IPAddress)
+	fmt.Println(config.IPAddress)
+
+	respIpv4orIPv6 := config.IPAddress
 
 	// Adding game session information
 	respIpv4orIPv6 = "https://" + respIpv4orIPv6

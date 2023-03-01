@@ -117,15 +117,18 @@ func main() {
 
 	if *GameServer {
 		go gameserver.Server(Config.InternalGameServerPort)
+		time.Sleep(2 * time.Second)
 	}
 
 	if !*GameServer || *BothServers {
 		if *tls {
 			log.Println("Listening on TLS:", *addr+":"+Config.InternalScreenSharePort)
 			go http.ListenAndServeTLS(*addr+":"+Config.InternalScreenSharePort, *certFile, *keyFile, server)
+			time.Sleep(2 * time.Second)
 		} else {
 			log.Println("Listening:", *addr+":"+Config.InternalScreenSharePort)
 			go http.ListenAndServe(*addr+":"+Config.InternalScreenSharePort, server)
+			time.Sleep(2 * time.Second)
 		}
 	}
 

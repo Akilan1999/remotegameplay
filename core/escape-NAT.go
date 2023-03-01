@@ -25,7 +25,7 @@ func EscapeNAT(ScreenSharePort, GameplayServerPort string) (ServerPort string, S
     }
 
     // Get free port from P2PRC server node
-    ScreensharePort, err = frp.GetFRPServerPort("http://64.227.168.102:8088")
+    ScreensharePortFRP, err := frp.GetFRPServerPort("http://64.227.168.102:8088")
 
     if err != nil {
         return
@@ -34,7 +34,7 @@ func EscapeNAT(ScreenSharePort, GameplayServerPort string) (ServerPort string, S
     time.Sleep(1 * time.Second)
 
     // port for the screenshare port
-    ScreensharePort, err = frp.StartFRPClientForServer("64.227.168.102", ScreensharePort, ScreenSharePort)
+    ScreensharePort, err = frp.StartFRPClientForServer("64.227.168.102", ScreensharePortFRP, ScreenSharePort)
     if err != nil {
         return
     }

@@ -200,6 +200,10 @@ func CheckIfGameSessionIsActiveOrRemove(gorm *gorm.DB) {
 			return
 		}
 
+		if len(Gamesessions) != 0 {
+			fmt.Println(Gamesessions[0].Link)
+		}
+
 		http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
 		for i, _ := range Gamesessions {
 			req, err := http.NewRequest("GET", Gamesessions[i].Link, nil)
