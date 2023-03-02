@@ -13,27 +13,45 @@ accepting remote inputs.<br>
 There will be ansible instructions which can be executed inside into any virtual environment. This will
 be a plugin which complements the project [P2PRC](https://p2prc.akilan.io)
 
-# Index
+[//]: # (# Index)
 
-- [Testing with X-Plane 11](#testing-with-x-plane-11)
-- [Laplace](#laplace)
-- [Installation](#installation)
-  - [Installation required to share keyboard and mouse](#installation-required-to-share-keyboard-and-mouse)
-    - [What is x2x?](#what-is-x2x)
-    - [What is Barrier KVM](#what-is-barrier-kvm)
-    - [Barrier KVM build status and links to install](#barrier-kvm-build-status-and-links-to-install)
-  - [Build from Source](#build-from-source)
-- [Program Execution](#program-execution)
-  - [Starting game when screen-share is triggered](#starting-game-when-screen-share-is-triggered)
-    - [Ex: Start X-Plane 11](#ex-start-x-plane-11)
-    - [Open config file](#open-config-file)
-  - [Call from built script which starts the server , creates room and outputs the ID](#call-from-built-script-which-starts-the-server--creates-room-and-outputs-the-id)
-  - [Starting the Server](#starting-server)
-  - [Starting the Screenshare](#starting-screenshare)
-- [Contributing](#contributing)
-- [Discord Server Link](#or)
+[//]: # ()
+[//]: # (- [Testing with X-Plane 11]&#40;#testing-with-x-plane-11&#41;)
 
----
+[//]: # (- [Laplace]&#40;#laplace&#41;)
+
+[//]: # (- [Installation]&#40;#installation&#41;)
+
+[//]: # (  - [Installation required to share keyboard and mouse]&#40;#installation-required-to-share-keyboard-and-mouse&#41;)
+
+[//]: # (    - [What is x2x?]&#40;#what-is-x2x&#41;)
+
+[//]: # (    - [What is Barrier KVM]&#40;#what-is-barrier-kvm&#41;)
+
+[//]: # (    - [Barrier KVM build status and links to install]&#40;#barrier-kvm-build-status-and-links-to-install&#41;)
+
+[//]: # (  - [Build from Source]&#40;#build-from-source&#41;)
+
+[//]: # (- [Program Execution]&#40;#program-execution&#41;)
+
+[//]: # (  - [Starting game when screen-share is triggered]&#40;#starting-game-when-screen-share-is-triggered&#41;)
+
+[//]: # (    - [Ex: Start X-Plane 11]&#40;#ex-start-x-plane-11&#41;)
+
+[//]: # (    - [Open config file]&#40;#open-config-file&#41;)
+
+[//]: # (  - [Call from built script which starts the server , creates room and outputs the ID]&#40;#call-from-built-script-which-starts-the-server--creates-room-and-outputs-the-id&#41;)
+
+[//]: # (  - [Starting the Server]&#40;#starting-server&#41;)
+
+[//]: # (  - [Starting the Screenshare]&#40;#starting-screenshare&#41;)
+
+[//]: # (- [Contributing]&#40;#contributing&#41;)
+
+[//]: # (- [Discord Server Link]&#40;#or&#41;)
+
+[//]: # ()
+[//]: # (---)
 
 ## Testing with [X-Plane 11](https://www.x-plane.com/)
 [![A screenshot of X-Plane 11 (flight simulator game) running smoothly via WebRTC](https://i.ytimg.com/vi/65dn7TRgzeE/hqdefault.jpg)](https://www.youtube.com/watch?v=65dn7TRgzeE "Running X-Plane 11 using WebRTC")
@@ -46,14 +64,16 @@ https://github.com/Akilan1999/laplace/tree/keyboard_mouse
 
 
 ### Installation required to share keyboard and mouse
-Currently, you can either use [x2x](https://github.com/dottedmag/x2x) or [Barrier KVM]()<br>
-We need to ensure that the client has SSH client installed or Barrierc.
+Currently, you can use [Barrier KVM]().<br>
 
-#### What is x2x?
-[x2x](https://github.com/dottedmag/x2x) allows the keyboard, mouse on one X display to be used to control another X
-display. It also shares X clipboards between the displays.
+[//]: # (#### What is x2x?)
 
-Note: x2x runs on top of SSH.
+[//]: # ([x2x]&#40;https://github.com/dottedmag/x2x&#41; allows the keyboard, mouse on one X display to be used to control another X)
+
+[//]: # (display. It also shares X clipboards between the displays.)
+
+[//]: # ()
+[//]: # (Note: x2x runs on top of SSH.)
 
 #### What is Barrier KVM?
 
@@ -75,74 +95,51 @@ moving your mouse to the edge of the screen, or by using a keypress to switch fo
 ### Build from source
 
 ```bash
-# Assumes to be running on ubuntu 20.04
-# Ports required to be allocated internally:
-# - 8888 (laplace server)
+# Install golang 
+# https://go.dev/doc/install
 
-# Updating and installing go compiler
-apt update
-apt install -y golang
-apt install -y jq
-## Installing git
-apt install -y git
-# Installing OpenSSH server 
-apt install -y openssh-server
-## Installing x2x
-apt install -y x2x
-## Installing barrier
-apt install -y barrier
-## Installing chromium
-wget https://github.com/RobRich999/Chromium_Clang/releases/download/v94.0.4585.0-r904940-linux64-deb-avx/chromium-browser-unstable_94.0.4585.0-1_amd64.deb
-apt install -y ./chromium-browser-unstable_94.0.4585.0-1_amd64.deb
-#
-## clone remotegameplay distribution
-git clone https://github.com/Akilan1999/remotegameplay
-## enter cloned directory
-cd remotegameplay
-# sets REMOTEGAMEPLAY path
-export REMOTEGAMING=$PWD
-
-# Build laplace binary file
+# Build 
 go build .
 
-# Set configuration laplace file
-./laplace -setconfig
+# Configure (run only once)
+./remotegaming -setconfig
 
-# Open config.json file and add SSH password for x2x
+# Migrate (run only once)
+./remotegaming -Migrate
+
+# The following are OR Based instruction.
+# You could start the server in either of
+# of the modes. (run every time you
+# would want to start a server)
+
+# Setting up based on the generated config 
+# open config.json 
+{
+ "SystemUsername": "<auto-set>",
+ "BarrierHostName": "<auto-set>",
+ "Rooms": "<auto-set>",
+ "IPAddress": "<auto-set>",
+ "ScriptToExecute": "",
+ "SSHPassword": "",
+ "NATEscapeGameServerPort": "<auto-set>",
+ "NATEscapeScreenSharePort": "<auto-set>",
+ "NATEscapeBarrierPort": "",
+ "BackendURL": "<auto-set> or set to a gameserver externally hosted",
+ "BrowserCommand": "Requires the user to setup the command that triggers the browser from the Terminal or Command line",
+ "Rate": 0,
+ "ScreenName": "Entire screen (The default point) or add custom screename or tab",
+ "InternalGameServerPort": "8088",
+ "InternalScreenSharePort": "8888"
+}
+
+## Both Servers 
+## Starts the remote gaming screenshare server and the gameserver 
+./remotegaming -BothServers 
+## Start only game server
+./remotegaming -GameServer
+## Start only screenshare
+./remotegaming -tls -headless 
 ```
-
-## Program Execution
-
-Executing this project basically serves an HTTP server that will host the frontend and the WebSocket implementation.<br>
-Note that you sometimes need to run HTTPs in order for browser to connect to websocket.
-
-```bash
-$ ./laplace --help
-  -BinaryToExecute string
-    	Providing path (i.e Absolute path) of binary to execute
-  -addr string
-    	Listen address (default "0.0.0.0:443")
-  -certFile string
-    	TLS cert file (default "files/server.crt")
-  -headless
-    	Creating screenshare using headless mode
-  -keyFile string
-    	TLS key file (default "files/server.key")
-  -killChromium
-    	Kills all chromuim
-  -killServer
-    	Kills the laplace
-  -roomInfo
-    	Getting room id of headless server
-  -setconfig
-    	Generates a config file
-  -tls
-    	Use TLS
-```
-
-By default, you can run the executable without any argument to listen to TLS port 443.<br>
-A self-signed certificate files are provided to ease up development. If you want to run 
-with barrier KVM. Run as non-root. 
 
 ### Starting game when screen-share is triggered
 This requires creating a bash script to trigger when the screenshare begins.
@@ -155,38 +152,66 @@ cd /path/.local/share/Steam/steamapps/common/X-Plane\ 11/
 # Execute X-Plane 11 binary 
 ./X-Plane-x86_64
 ```
-#### Open config file 
-```bash
 
-{
-  "barrierhostname": "<barrier host name>",
-  "ipaddress": "0.0.0.0",
-  "rooms": "<path to room.json file>",
-  "scripttoexecute": "<path to script to execute (In case the Xplane 11 script)>",
-  "sshpassword": "<SSH password for x2x>",
-  "systemusername": "<system username>"
-}
-```
-### Call from built script which starts the server , creates room and outputs the ID
-```bash
-sh run.sh <IPV6 or Public IPV4 address of server>
-```
-Note: This script starts the server using the port 8888 by default<br>
-The 2 steps below are if you want to start them command by command 
+[//]: # (#### Open config file )
 
-### Starting server
-```bash
-$ ./laplace -tls -addr 0.0.0.0:8888
-2020/03/25 01:01:10 Listening on TLS: 0.0.0.0:8888
-```
+[//]: # (```bash)
 
-### Starting screenshare 
-```bash
-./laplace -headless -addr <public ip address of server> 
-```
+[//]: # ()
+[//]: # ({)
 
-You can then open https://localhost:8888/ to view Laplace page.<br>
-You may need to add certificate exceptions. In Chrome, you can type `thisisunsafe`.
+[//]: # (  "barrierhostname": "<barrier host name>",)
+
+[//]: # (  "ipaddress": "0.0.0.0",)
+
+[//]: # (  "rooms": "<path to room.json file>",)
+
+[//]: # (  "scripttoexecute": "<path to script to execute &#40;In case the Xplane 11 script&#41;>",)
+
+[//]: # (  "sshpassword": "<SSH password for x2x>",)
+
+[//]: # (  "systemusername": "<system username>")
+
+[//]: # (})
+
+[//]: # (```)
+
+[//]: # (### Call from built script which starts the server , creates room and outputs the ID)
+
+[//]: # (```bash)
+
+[//]: # (sh run.sh <IPV6 or Public IPV4 address of server>)
+
+[//]: # (```)
+
+[//]: # (Note: This script starts the server using the port 8888 by default<br>)
+
+[//]: # (The 2 steps below are if you want to start them command by command )
+
+[//]: # ()
+[//]: # (### Starting server)
+
+[//]: # (```bash)
+
+[//]: # ($ ./laplace -tls -addr 0.0.0.0:8888)
+
+[//]: # (2020/03/25 01:01:10 Listening on TLS: 0.0.0.0:8888)
+
+[//]: # (```)
+
+[//]: # ()
+[//]: # (### Starting screenshare )
+
+[//]: # (```bash)
+
+[//]: # (./laplace -headless -addr <public ip address of server> )
+
+[//]: # (```)
+
+[//]: # ()
+[//]: # (You can then open https://localhost:8888/ to view Laplace page.<br>)
+
+[//]: # (You may need to add certificate exceptions. In Chrome, you can type `thisisunsafe`.)
 
 
 

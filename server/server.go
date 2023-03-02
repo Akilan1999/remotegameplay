@@ -194,7 +194,7 @@ func Server(port string) error {
 
 func CheckIfGameSessionIsActiveOrRemove(gorm *gorm.DB) {
 	for {
-		time.Sleep(2 * time.Second)
+		time.Sleep(10 * time.Second)
 		Gamesessions, err := DisplayGameSessions(gorm)
 		if err != nil {
 			return
