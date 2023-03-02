@@ -56,6 +56,15 @@ type ServerSpecs struct {
 	GPU      string `form:"GPU" binding:"required" bson:GPU`
 }
 
+// BarrierIP Barrier connection information
+type BarrierIP struct {
+	ID          string `bson: ID`
+	BarrierIP   string `form:"BarrierIP" binding:"required" bson:hostname`
+	MachineName string `form:"MachineName" binding:"required" bson:hostname`
+	UserID      string `json:"UserID"`
+	User        Users  `gorm:"foreignKey:UserID;references:UserID" json:"ServerInformation"`
+}
+
 // CreateTables CreateDB Add tables to the database
 func CreateTables(db *gorm.DB) (*gorm.DB, error) {
 	// Creates table to store login sessions
@@ -66,6 +75,8 @@ func CreateTables(db *gorm.DB) (*gorm.DB, error) {
 	db.AutoMigrate(GameSession{})
 	// Creates table of type ServerSpecs
 	db.AutoMigrate(ServerSpecs{})
+	// Creates table of type BarrierIP
+	db.AutoMigrate(BarrierIP{})
 	// returns variable DB of type *gorm.DB and error
 	// which is nil at the current moment
 	return db, nil
@@ -347,4 +358,61 @@ func GetUserInformation(db *gorm.DB, SessionID string) (*Users, error) {
 	}
 
 	return nil, errors.New("Session not found. ")
+}
+
+// AddBarrierIP Adds barrierIP information to barrier table
+func AddBarrierIP(db *gorm.DB, SessionID string, barrierIP string, MachineName string) (*BarrierIP, error) {
+	// Get User Information
+	user, err := GetUserInformation(db, SessionID)
+	if err != nil {
+		return nil, err
+	}
+
+	// Check if the barrier IP exists
+	exists, err := CheckIfBarrierAddressExists(db, barrierIP)
+	if err != nil {
+		return nil, err
+	}
+
+	if exists == false {
+		var NewBarrierIP BarrierIP
+		NewBarrierIP.BarrierIP = barrierIP
+		NewBarrierIP.UserID = user.UserID
+		NewBarrierIP.MachineName = MachineName
+
+		// creates barrier table with info
+		db.Create(NewBarrierIP)
+
+		return &NewBarrierIP, nil
+	}
+
+	return nil, errors.New("BarrierIP already exists. ")
+}
+
+// CheckIfBarrierAddressExists Check if the barrier ip
+// address with port exists
+func CheckIfBarrierAddressExists(db *gorm.DB, barrierIP string) (bool, error) {
+	BarrierRows, err := db.Model(&BarrierIP{}).Where("barrier_ip = ? ", barrierIP).Rows()
+	if err != nil {
+		return false, err
+	}
+	defer BarrierRows.Close()
+
+	// Checks if there is more than one entry and returns
+	// true if that entry exists.
+	if BarrierRows.Next() {
+		return true, nil
+	}
+
+	return false, nil
+}
+
+// RemoveBarrierIP Remove barrier row based on the IP address provided
+func RemoveBarrierIP(db *gorm.DB, barrierIP string) error {
+	// Delete session from the database
+	err := db.Where("barrier_ip = ?", barrierIP).Delete(BarrierIP{})
+	if err != nil {
+		return err.Error
+	}
+	return nil
 }
