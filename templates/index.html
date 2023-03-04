@@ -178,7 +178,11 @@
       </div>
     </div>
     <script type="text/javascript">
-      MicroModal.init();
+      MicroModal.init({
+        disableScroll: true,
+        awaitOpenAnimation: true,
+        awaitCloseAnimation: true,
+      });
 
       let link = "";
 
