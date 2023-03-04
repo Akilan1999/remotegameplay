@@ -285,7 +285,7 @@ nav.navbar {
   font-weight: 600;
   font-size: 1.25rem;
   line-height: 1.25;
-  color: #00449e;
+  color: #000;
   box-sizing: border-box;
 }
 
@@ -319,6 +319,7 @@ nav.navbar {
   border-width: 0;
   cursor: pointer;
   -webkit-appearance: button;
+  appearance: button;
   text-transform: none;
   overflow: visible;
   line-height: 1.15;
@@ -335,7 +336,7 @@ nav.navbar {
 }
 
 .modal__btn-primary {
-  background-color: #00449e;
+  background-color: #000;
   color: #fff;
 }
 
