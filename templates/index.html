@@ -20,7 +20,7 @@
     />
     <link rel="stylesheet" type="text/css" href="assets/css/admin.css" />
     <!-- CDN script to import micromodal -->
-    <script src="https://unpkg.com/micromodal/dist/micromodal.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/micromodal/dist/micromodal.min.js"></script>
   </head>
 
   <body>
@@ -45,92 +45,89 @@
     </nav>
     <!-- END NAV -->
     <div class="container">
-      <div class="">
-        <div class="">
-          <section class="hero is-info welcome is-small">
-            <div class="hero-body">
-              <div class="container">
-                <h1 class="title">Hello, {{ .User.Name }}</h1>
-                <h2 class="subtitle">I hope you are having a great day!</h2>
-              </div>
-            </div>
-          </section>
-          <section>
-            <div class="video-container">
-              <iframe
-                src="https://www.youtube.com/embed/WVDSVhMW7o4"
-                title="YouTube video player"
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowfullscreen
-              >
-              </iframe>
-            </div>
-          </section>
-
-          <div class="barrier-section">
-            <form action="">
-              <div class="field">
-                <label class="label">Barrier IP Address</label>
-                <div class="control">
-                  <input
-                    class="input"
-                    type="text"
-                    placeholder="Barrier IP address"
-                  />
-                </div>
-              </div>
-              <div class="field">
-                <label class="label">Machine Name</label>
-                <div class="control">
-                  <input class="input" type="text" placeholder="Machine name" />
-                </div>
-              </div>
-              <div class="field is-grouped">
-                <div class="control">
-                  <button type="button" class="custom-button button-dark">
-                    Add Barrier Information
-                  </button>
-                </div>
-              </div>
-            </form>
-            <div class="divider"></div>
-            <div class="barrier-session-info-wrapper block">
-              <div class="barrier-session-info">
-                <div class="light-text">Barrier Session information</div>
-                <div>
-                  <div class="small-text">Barrier IP address and HostName</div>
-                  <button type="button" class="custom-button button-light">
-                    Remove
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="cards-container">
-            {{ range .GameSessions }}
-            <div class="custom-card">
-              <article class="tile is-child box">
-                <p class="title">{{ .Server.GPU }}</p>
-                <p class="server-info">RAM: {{ .Server.RAM }} MB</p>
-                <p class="server-info">Rate: {{ .Rate }}$/hr</p>
-                <p class="server-info">CPU: {{ .Server.CPU }}</p>
-                <p class="server-info">Disk: {{ .Server.Disk }} MB</p>
-                <p class="server-info">Platform: {{ .Server.Platform }}</p>
-                <br />
-                <button
-                  type="button"
-                  class="button is-block is-success is-fullwidth is-medium"
-                  onclick="setCurrentLink({currentLink: `{{ .Link }}`})"
-                  data-custom-open="modal-1"
-                >
-                  Play
-                </button>
-              </article>
-            </div>
-            {{ end }}
+      <section class="hero is-info welcome is-small">
+        <div class="hero-body">
+          <div class="container">
+            <h1 class="title">Hello, {{ .User.Name }}</h1>
+            <h2 class="subtitle">I hope you are having a great day!</h2>
           </div>
         </div>
+      </section>
+      <section>
+        <div class="video-container">
+          <!-- TODO: 'iframe[allow]' is not supported by Firefox for Android -->
+          <iframe
+            src="https://www.youtube.com/embed/WVDSVhMW7o4"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          >
+          </iframe>
+        </div>
+      </section>
+
+      <div class="barrier-section">
+        <form onsubmit="(event) => event.preventDefault()">
+          <div class="field">
+            <label class="label">Barrier IP Address</label>
+            <div class="control">
+              <input
+                class="input"
+                type="text"
+                placeholder="Barrier IP address"
+              />
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Machine Name</label>
+            <div class="control">
+              <input class="input" type="text" placeholder="Machine name" />
+            </div>
+          </div>
+          <div class="field is-grouped">
+            <div class="control">
+              <button type="button" class="custom-button button-dark">
+                Add Barrier Information
+              </button>
+            </div>
+          </div>
+        </form>
+        <div class="divider"></div>
+        <div class="barrier-session-info-wrapper block">
+          <div class="barrier-session-info">
+            <div class="light-text">Barrier Session information</div>
+            <div>
+              <div class="small-text">Barrier IP address and HostName</div>
+              <button type="button" class="custom-button button-light">
+                Remove
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="cards-container">
+        {{ range .GameSessions }}
+        <div class="custom-card">
+          <article class="tile is-child box">
+            <p class="title">{{ .Server.GPU }}</p>
+            <p class="server-info">RAM: {{ .Server.RAM }} MB</p>
+            <p class="server-info">Rate: {{ .Rate }}$/hr</p>
+            <p class="server-info">CPU: {{ .Server.CPU }}</p>
+            <p class="server-info">Disk: {{ .Server.Disk }} MB</p>
+            <p class="server-info">Platform: {{ .Server.Platform }}</p>
+            <br />
+            <button
+              type="button"
+              class="button is-block is-success is-fullwidth is-medium"
+              onclick="setCurrentLink({currentLink: `{{ .Link }}`})"
+              data-micromodal-trigger="modal-1"
+            >
+              Play
+            </button>
+          </article>
+        </div>
+        {{ end }}
       </div>
 
       <div class="modal micromodal-slide" id="modal-1" aria-hidden="true">
@@ -142,8 +139,9 @@
             aria-labelledby="modal-1-title"
           >
             <header class="modal__header">
-              <h2 class="modal__title" id="modal-1-title">Modal</h2>
+              <h2 class="modal__title" id="modal-1-title">Modal Title</h2>
               <button
+                type="button"
                 class="modal__close"
                 aria-label="Close modal"
                 data-micromodal-close
@@ -178,19 +176,26 @@
       </div>
     </div>
     <script type="text/javascript">
-      MicroModal.init({
-        disableScroll: true,
-        awaitOpenAnimation: true,
-        awaitCloseAnimation: true,
+      // Docs for micromodal: https://micromodal.vercel.app
+      document.addEventListener("DOMContentLoaded", function () {
+        try {
+          MicroModal.init({
+            awaitOpenAnimation: true, // set to false, to remove open animation
+            awaitCloseAnimation: true, // set to false, to remove close animation
+          });
+        } catch (e) {
+          console.log("micromodal error: ", e);
+        }
       });
 
       let link = "";
 
+      // set the link to the current link
       function setCurrentLink({ currentLink }) {
         link = currentLink.slice(1, -1); //? get rid of the quotes
-        MicroModal.show("modal-1");
       }
 
+      // open the link in a new tab
       function goToLink() {
         window.open(link, "_blank");
       }
