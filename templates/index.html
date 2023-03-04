@@ -1,154 +1,194 @@
 <!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Xplane WebRTC</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700"
+      rel="stylesheet"
+    />
     <!-- Bulma Version 0.9.0-->
-    <link rel="stylesheet" href="https://unpkg.com/bulma@0.9.0/css/bulma.min.css" />
-    <link rel="stylesheet" type="text/css" href="assets/css/admin.css">
-</head>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/bulma@0.9.0/css/bulma.min.css"
+    />
+    <link rel="stylesheet" type="text/css" href="assets/css/admin.css" />
+    <!-- CDN script to import micromodal -->
+    <script src="https://unpkg.com/micromodal/dist/micromodal.min.js"></script>
+  </head>
 
-<body>
-
+  <body>
     <!-- START NAV -->
     <nav class="navbar is-white">
-        <div class="container">
-            <div class="navbar-brand">
-                <a class="navbar-item brand-text" href="/">
-                    XPlane11-WebRTC
-                </a>
-                <div class="navbar-burger burger" data-target="navMenu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-            </div>
-            <div id="navMenu" class="navbar-menu">
-                <div class="navbar-start">
-                    <a class="navbar-item" href="/">
-                        Home
-                    </a>
-                    <a class="navbar-item" href="/logout">
-                        Logout
-                    </a>
-                </div>
-
-            </div>
+      <div class="container">
+        <div class="navbar-brand">
+          <a class="navbar-item brand-text" href="/"> XPlane11-WebRTC </a>
+          <div class="navbar-burger burger" data-target="navMenu">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
         </div>
+        <div id="navMenu" class="navbar-menu">
+          <div class="navbar-start">
+            <a class="navbar-item" href="/"> Home </a>
+            <a class="navbar-item" href="/logout"> Logout </a>
+          </div>
+        </div>
+      </div>
     </nav>
     <!-- END NAV -->
     <div class="container">
+      <div class="">
         <div class="">
-            <div class="">
-                <section class="hero is-info welcome is-small">
-                    <div class="hero-body">
-                        <div class="container">
-                            <h1 class="title">
-                                Hello, {{ .User.Name }}
-                            </h1>
-                            <h2 class="subtitle">
-                                I hope you are having a great day!
-                            </h2>
-                            </article>
-                        </div>
-                    </div>
-                </section>
-                <section class="info-tiles">
-                    <div class="column is-6 row is-multiline">
-                        <iframe src="https://www.youtube.com/embed/WVDSVhMW7o4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="width: 100%; height: 100%"></iframe>
-                    </div>
-                    <div class="column is-6 row is-multiline">
-                        <div class="field is-horizontal">
-                            <div class="field-label is-medium">
-                                <label class="label">Barrier IP Address</label>
-                            </div>
-                            <div class="field-body">
-                                <div class="field">
-                                    <div class="control">
-                                        <input class="input is-medium" type="text" placeholder="Barrier IP address">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="field is-horizontal">
-                            <div class="field-label is-medium">
-                                <label class="label">Machine Name</label>
-                            </div>
-                            <div class="field-body">
-                                <div class="field">
-                                    <div class="control">
-                                        <input class="input is-medium" type="text" placeholder="Machine name">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <center><button class="button is-black" style="font-weight:700">Add Barrier Information</button>
-                        </center>
-                    </div>
-                    <div class="column is-6 row is-multiline">
-                        <div class="card events-card">
-                            <header class="card-header">
-                                <p class="card-header-title">
-                                    Barrier Session information
-                                </p>
-                                <a href="#" class="card-header-icon" aria-label="more options">
-                                    <span class="icon">
-                                        <i class="fa fa-angle-down" aria-hidden="true"></i>
-                                    </span>
-                                </a>
-                            </header>
-                            <div class="card-table">
-                                <div class="content">
-                                    <table class="table is-fullwidth is-striped">
-                                        <tbody>
-                                            <tr>
-                                                <td width="5%"></td>
-                                                <td>Barrier IP address and HostName</td>
-                                                <td class="level-right"><a class="button is-small bg-danger"
-                                                        href="#">Remove</a></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <!-- <footer class="card-footer">
-                                <a href="#" class="card-footer-item">Add Barrier session</a>
-                            </footer> -->
-                        </div>
-                    </div>
-                    <div class="tile is-ancestor has-text-centered row columns is-multiline">
-                        {{ range .GameSessions }}
-                        <div class="column is-4 tile is-parent">
-                            <article class="tile is-child box">
-                                <p class="title">{{ .Server.GPU }}</p>
-                                <p style="color: #8F99A3; margin-top:-1.25rem; font-weight: 300; font-size: 1.25rem">
-                                    RAM: {{ .Server.RAM }} MB</p>
-                                <p style="color: #8F99A3; font-weight: 300; font-size: 1.25rem">Rate: {{ .Rate }}$/hr
-                                </p>
-                                <p style="color: #8F99A3; font-weight: 300; font-size: 1.25rem">CPU: {{ .Server.CPU }}
-                                </p>
-                                <p style="color: #8F99A3; font-weight: 300; font-size: 1.25rem">Disk: {{ .Server.Disk }}
-                                    MB</p>
-                                <p style="color: #8F99A3; font-weight: 300; font-size: 1.25rem">Platform: {{
-                                    .Server.Platform }}</p>
-                                <br>
-                                <a href="{{ .Link }}" class="button is-block is-success is-fullwidth is-medium">Play</a>
-                            </article>
-                        </div>
-                        {{ end }}
-                    </div>
-                </section>
+          <section class="hero is-info welcome is-small">
+            <div class="hero-body">
+              <div class="container">
+                <h1 class="title">Hello, {{ .User.Name }}</h1>
+                <h2 class="subtitle">I hope you are having a great day!</h2>
+              </div>
             </div>
-        </div>
-    </div>
-    <script async type="text/javascript" src="assets/js/bulma.js"></script>
-</body>
+          </section>
+          <section>
+            <div class="video-container">
+              <iframe
+                src="https://www.youtube.com/embed/WVDSVhMW7o4"
+                title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+              >
+              </iframe>
+            </div>
+          </section>
 
+          <div class="barrier-section">
+            <form action="">
+              <div class="field">
+                <label class="label">Barrier IP Address</label>
+                <div class="control">
+                  <input
+                    class="input"
+                    type="text"
+                    placeholder="Barrier IP address"
+                  />
+                </div>
+              </div>
+              <div class="field">
+                <label class="label">Machine Name</label>
+                <div class="control">
+                  <input class="input" type="text" placeholder="Machine name" />
+                </div>
+              </div>
+              <div class="field is-grouped">
+                <div class="control">
+                  <button type="button" class="custom-button button-dark">
+                    Add Barrier Information
+                  </button>
+                </div>
+              </div>
+            </form>
+            <div class="divider"></div>
+            <div class="barrier-session-info-wrapper block">
+              <div class="barrier-session-info">
+                <div class="light-text">Barrier Session information</div>
+                <div>
+                  <div class="small-text">Barrier IP address and HostName</div>
+                  <button type="button" class="custom-button button-light">
+                    Remove
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="cards-container">
+            {{ range .GameSessions }}
+            <div class="custom-card">
+              <article class="tile is-child box">
+                <p class="title">{{ .Server.GPU }}</p>
+                <p class="server-info">RAM: {{ .Server.RAM }} MB</p>
+                <p class="server-info">Rate: {{ .Rate }}$/hr</p>
+                <p class="server-info">CPU: {{ .Server.CPU }}</p>
+                <p class="server-info">Disk: {{ .Server.Disk }} MB</p>
+                <p class="server-info">Platform: {{ .Server.Platform }}</p>
+                <br />
+                <button
+                  type="button"
+                  class="button is-block is-success is-fullwidth is-medium"
+                  onclick="setCurrentLink({currentLink: `{{ .Link }}`})"
+                  data-custom-open="modal-1"
+                >
+                  Play
+                </button>
+              </article>
+            </div>
+            {{ end }}
+          </div>
+        </div>
+      </div>
+
+      <div class="modal micromodal-slide" id="modal-1" aria-hidden="true">
+        <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+          <div
+            class="modal__container"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modal-1-title"
+          >
+            <header class="modal__header">
+              <h2 class="modal__title" id="modal-1-title">Modal</h2>
+              <button
+                class="modal__close"
+                aria-label="Close modal"
+                data-micromodal-close
+              ></button>
+            </header>
+            <main class="modal__content" id="modal-1-content">
+              <p>
+                Try hitting the <code>tab</code> key and notice how the focus
+                stays within the modal itself. Also, <code>esc</code> to close
+                modal.
+              </p>
+            </main>
+            <footer class="modal__footer">
+              <button
+                class="modal__btn modal__btn-primary"
+                onclick="goToLink()"
+              >
+                Continue
+              </button>
+              <button
+                class="modal__btn"
+                data-micromodal-close
+                aria-label="Close this dialog window"
+              >
+                Close
+              </button>
+            </footer>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript">
+      MicroModal.init();
+
+      let link = "";
+
+      function setCurrentLink({ currentLink }) {
+        link = currentLink.slice(1, -1); //? get rid of the quotes
+        MicroModal.show("modal-1");
+      }
+
+      function goToLink() {
+        window.open(link, "_blank");
+      }
+    </script>
+    <script async type="text/javascript" src="assets/js/bulma.js"></script>
+  </body>
 </html>
