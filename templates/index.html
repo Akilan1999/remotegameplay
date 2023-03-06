@@ -76,18 +76,20 @@
                 class="input"
                 type="text"
                 placeholder="Barrier IP address"
+                name="BarrierIP"
+                id="BarrierIP"
               />
             </div>
           </div>
           <div class="field">
             <label class="label">Machine Name</label>
             <div class="control">
-              <input class="input" type="text" placeholder="Machine name" />
+              <input class="input" type="text" name="MachineName" id="MachineName" placeholder="Machine name" />
             </div>
           </div>
           <div class="field is-grouped">
             <div class="control">
-              <button type="button" class="custom-button button-dark">
+              <button type="button" class="custom-button button-dark"  onclick="AddBarrierNode();return false;">
                 Add Barrier Information
               </button>
             </div>
@@ -97,12 +99,14 @@
         <div class="barrier-session-info-wrapper block">
           <div class="barrier-session-info">
             <div class="light-text">Barrier Session information</div>
+              {{ range .BarrierIPS }}
             <div>
-              <div class="small-text">Barrier IP address and HostName</div>
-              <button type="button" class="custom-button button-light">
+              <div class="small-text">{{ .BarrierIP }} and {{ .MachineName }}</div>
+              <button type="button" class="custom-button button-light" onclick="RemoveBarrierSessions({{ .BarrierIP }});return false;">
                 Remove
               </button>
             </div>
+              {{ end }}
           </div>
         </div>
       </div>
@@ -110,12 +114,13 @@
         {{ range .GameSessions }}
         <div class="custom-card">
           <article class="tile is-child box">
-            <p class="title">{{ .Server.GPU }}</p>
+            <p class="title">{{ .Server.Hostname }}</p>
             <p class="server-info">RAM: {{ .Server.RAM }} MB</p>
             <p class="server-info">Rate: {{ .Rate }}$/hr</p>
             <p class="server-info">CPU: {{ .Server.CPU }}</p>
             <p class="server-info">Disk: {{ .Server.Disk }} MB</p>
             <p class="server-info">Platform: {{ .Server.Platform }}</p>
+              <p class="server-info">GPU: {{ .Server.GPU }}</p>
             <br />
             <button
               type="button"
@@ -139,7 +144,7 @@
             aria-labelledby="modal-1-title"
           >
             <header class="modal__header">
-              <h2 class="modal__title" id="modal-1-title">Modal Title</h2>
+              <h2 class="modal__title" id="modal-1-title">Choose barrier session</h2>
               <button
                 type="button"
                 class="modal__close"
@@ -148,11 +153,14 @@
               ></button>
             </header>
             <main class="modal__content" id="modal-1-content">
-              <p>
-                Try hitting the <code>tab</code> key and notice how the focus
-                stays within the modal itself. Also, <code>esc</code> to close
-                modal.
-              </p>
+                {{ range .BarrierIPS }}
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault{{ .MachineName }}">
+                    <label class="form-check-label" for="flexRadioDefault{{ .MachineName }}">
+                        {{ .BarrierIP }} and {{ .MachineName }}
+                    </label>
+                </div>
+                {{ end }}
             </main>
             <footer class="modal__footer">
               <button
@@ -199,6 +207,78 @@
       // open the link in a new tab
       function goToLink() {
         window.open(link, "_blank");
+      }
+
+      // The function is called on OnClick action
+      function AddBarrierNode() {
+          // Getting element information of all the fields
+          // required for registration
+          var BarrierIP = document.getElementById("BarrierIP").value
+          var MachineName = document.getElementById("MachineName").value
+
+
+          // // When EmailID is not entered
+          // if (BarrierIP == "") {
+          //     document.getElementById("EmailIDError").innerHTML = "Enter EmailID"
+          //     return
+          // }
+          //
+          // // When EmailID is entered
+          // if (BarrierIP != "") {
+          //     document.getElementById("EmailIDError").innerHTML = ""
+          // }
+          //
+          // // When password and confirm password don't match
+          // if (MachineName != "") {
+          //     document.getElementById("PasswordError").innerHTML = ""
+          // }
+          // // When the password matches then clear the field
+          // if (MachineName == "") {
+          //     document.getElementById("PasswordError").innerHTML = "Enter password"
+          //     return
+          // }
+
+          // binding data to uri encoded string
+          uriencoded = "BarrierIP=" + BarrierIP + "&MachineName=" + MachineName
+
+          // Submitting the registration information
+          var xhr = new XMLHttpRequest();
+          xhr.open("POST", "/AddBarrierIP", true);
+          xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+          xhr.send(uriencoded);
+
+          xhr.onload = function () {
+              console.log(xhr.responseText)
+              // // Outputting response text
+              // document.getElementById("ResponseText").innerHTML = xhr.responseText
+              // Create Sessions browser
+              // if response is success then redirect
+              if (xhr.responseText === "Success") {
+                  window.location.replace("/");
+              }
+          }
+      }
+
+      function RemoveBarrierSessions(ipaddress) {
+          // binding data to uri encoded string
+          uriencoded = "BarrierIP=" + ipaddress
+
+          // Submitting the registration information
+          var xhr = new XMLHttpRequest();
+          xhr.open("POST", "/RemoveBarrierIP", true);
+          xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+          xhr.send(uriencoded);
+
+          xhr.onload = function () {
+              console.log(xhr.responseText)
+              // // Outputting response text
+              // document.getElementById("ResponseText").innerHTML = xhr.responseText
+              // Create Sessions browser
+              // if response is success then redirect
+              if (xhr.responseText === "BarrierIP removed successfully") {
+                  window.location.replace("/");
+              }
+          }
       }
     </script>
     <script async type="text/javascript" src="assets/js/bulma.js"></script>

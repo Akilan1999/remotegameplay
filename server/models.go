@@ -376,6 +376,10 @@ func AddBarrierIP(db *gorm.DB, SessionID string, barrierIP string, MachineName s
 
 	if exists == false {
 		var NewBarrierIP BarrierIP
+		// generate new UUID for barrier
+		id := uuid.New()
+		NewBarrierIP.ID = id.String()
+
 		NewBarrierIP.BarrierIP = barrierIP
 		NewBarrierIP.UserID = user.UserID
 		NewBarrierIP.MachineName = MachineName
@@ -415,4 +419,30 @@ func RemoveBarrierIP(db *gorm.DB, barrierIP string) error {
 		return err.Error
 	}
 	return nil
+}
+
+func GetBarrierInfo(db *gorm.DB, SessionID string) (barriers []*BarrierIP, err error) {
+	// Get User Information
+	user, err := GetUserInformation(db, SessionID)
+	if err != nil {
+		return nil, err
+	}
+
+	// Get barrier information for a particular
+	UserRows, err := db.Model(&BarrierIP{}).Where("user_id = ?", user.UserID).Rows()
+	if err != nil {
+		return nil, err
+	}
+	defer UserRows.Close()
+
+	for UserRows.Next() {
+		var barrier BarrierIP
+		err := db.ScanRows(UserRows, &barrier)
+		if err != nil {
+			return nil, err
+		}
+		barriers = append(barriers, &barrier)
+	}
+
+	return
 }
