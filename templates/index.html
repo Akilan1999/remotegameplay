@@ -155,22 +155,31 @@
             <main class="modal__content" id="modal-1-content">
                 {{ range .BarrierIPS }}
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault{{ .MachineName }}">
-                    <label class="form-check-label" for="flexRadioDefault{{ .MachineName }}">
+                    <button
+                            type="button"
+                            class="modal__btn modal__btn-primary"
+                            onclick="goToLink({{ .BarrierIP }})"
+                            data-micromodal-close
+                    >
                         {{ .BarrierIP }} and {{ .MachineName }}
-                    </label>
+                    </button>
+<!--                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault{{ .MachineName }}">-->
+<!--                    <label class="form-check-label" for="flexRadioDefault{{ .MachineName }}">-->
+<!--                        {{ .BarrierIP }} and {{ .MachineName }}-->
+<!--                    </label>-->
                 </div>
+                <br>
                 {{ end }}
             </main>
             <footer class="modal__footer">
-              <button
-                type="button"
-                class="modal__btn modal__btn-primary"
-                onclick="goToLink()"
-                data-micromodal-close
-              >
-                Continue
-              </button>
+<!--              <button-->
+<!--                type="button"-->
+<!--                class="modal__btn modal__btn-primary"-->
+<!--                onclick="goToLink()"-->
+<!--                data-micromodal-close-->
+<!--              >-->
+<!--                Continue-->
+<!--              </button>-->
               <button
                 type="button"
                 class="modal__btn"
@@ -202,11 +211,13 @@
       // set the link to the current link
       function setCurrentLink({ currentLink }) {
         link = currentLink.slice(1, -1); //? get rid of the quotes
+          // If radio button is selected
+          // redirect based on the link provided
       }
 
       // open the link in a new tab
-      function goToLink() {
-        window.open(link, "_blank");
+      function goToLink(barrierip) {
+        window.open(link + "&barrierip=" + barrierip, "_blank");
       }
 
       // The function is called on OnClick action
