@@ -180,8 +180,8 @@ function initUI() {
     //getting server hostname
     getServerIPandHostname()
 
-    LaplaceVar.ui.joinForm.onsubmit = async e => {
-        e.preventDefault();
+   // LaplaceVar.ui.joinForm.onsubmit = async e => {
+      //  e.preventDefault();
         LaplaceVar.roomID = LaplaceVar.ui.inputRoomID.value;
         LaplaceVar.barrierIP = LaplaceVar.ui.barrierIP.value;
 
@@ -195,8 +195,8 @@ function initUI() {
         else {
             window.history.pushState('', '', getJoinUrl(LaplaceVar.roomID,LaplaceVar.barrierIP));
         }
-        await doJoin(LaplaceVar.roomID,LaplaceVar.barrierIP);
-    };
+        doJoin(LaplaceVar.roomID,LaplaceVar.barrierIP);
+   // };
 
     LaplaceVar.ui.btnStream.onclick = async () => {
         window.history.pushState('', '', getStreamUrl());
