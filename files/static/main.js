@@ -180,15 +180,10 @@ function initUI() {
     //getting server hostname
     getServerIPandHostname()
 
-   // LaplaceVar.ui.joinForm.onsubmit = async e => {
-      //  e.preventDefault();
+    LaplaceVar.ui.joinForm.onsubmit = async e => {
+        e.preventDefault();
         LaplaceVar.roomID = LaplaceVar.ui.inputRoomID.value;
-       // LaplaceVar.barrierIP = LaplaceVar.ui.barrierIP.value;
-
-        let urlParams1;
-        urlParams1 = new URLSearchParams(window.location.search)
-        LaplaceVar.barrierIP = urlParams1.get('barrierip')
-
+        LaplaceVar.barrierIP = LaplaceVar.ui.barrierIP.value;
         // Check if the ip address for barrier is given
         if(LaplaceVar.barrierIP == "") {
             window.history.pushState('', '', getJoinUrl(LaplaceVar.roomID));
@@ -196,8 +191,8 @@ function initUI() {
         else {
             window.history.pushState('', '', getJoinUrl(LaplaceVar.roomID,LaplaceVar.barrierIP));
         }
-        doJoin(LaplaceVar.roomID,LaplaceVar.barrierIP);
-   // };
+        await doJoin(LaplaceVar.roomID,LaplaceVar.barrierIP);
+    };
 
     LaplaceVar.ui.btnStream.onclick = async () => {
         window.history.pushState('', '', getStreamUrl());
@@ -242,7 +237,7 @@ function initUI() {
     const queryString = window.location.search;
 
 // Getting url parameters from the URL
-    let urlParams = new URLSearchParams(queryString);
+    const urlParams = new URLSearchParams(queryString);
 
     // Running headless mode
     if(urlParams.get('mode') == "headless") {
@@ -250,6 +245,8 @@ function initUI() {
         LaplaceVar.ui.btnStartStream.click()
      //   },2000)
     }
+
+    LaplaceVar.barrierIP = urlParams.get('barrierip')
 
 
     print("Logs:");
