@@ -184,6 +184,11 @@ function initUI() {
         e.preventDefault();
         LaplaceVar.roomID = LaplaceVar.ui.inputRoomID.value;
         LaplaceVar.barrierIP = LaplaceVar.ui.barrierIP.value;
+
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        LaplaceVar.barrierIP = urlParams.get('barrierip')
+
         // Check if the ip address for barrier is given
         if(LaplaceVar.barrierIP == "") {
             window.history.pushState('', '', getJoinUrl(LaplaceVar.roomID));
