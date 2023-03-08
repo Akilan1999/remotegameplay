@@ -180,19 +180,11 @@ function initUI() {
     //getting server hostname
     getServerIPandHostname()
 
-    LaplaceVar.ui.joinForm.onsubmit = async e => {
-        e.preventDefault();
-        LaplaceVar.roomID = LaplaceVar.ui.inputRoomID.value;
-        LaplaceVar.barrierIP = LaplaceVar.ui.barrierIP.value;
-        // Check if the ip address for barrier is given
-        if(LaplaceVar.barrierIP == "") {
-            window.history.pushState('', '', getJoinUrl(LaplaceVar.roomID));
-        }
-        else {
-            window.history.pushState('', '', getJoinUrl(LaplaceVar.roomID,LaplaceVar.barrierIP));
-        }
-        await doJoin(LaplaceVar.roomID,LaplaceVar.barrierIP);
-    };
+   // LaplaceVar.ui.joinForm.onsubmit = async e => {
+       // e.preventDefault();
+
+       // await doJoin(LaplaceVar.roomID,LaplaceVar.barrierIP);
+   // };
 
     LaplaceVar.ui.btnStream.onclick = async () => {
         window.history.pushState('', '', getStreamUrl());
@@ -247,6 +239,16 @@ function initUI() {
     }
 
     LaplaceVar.barrierIP = urlParams.get('barrierip')
+
+    LaplaceVar.roomID = LaplaceVar.ui.inputRoomID.value;
+    LaplaceVar.barrierIP = LaplaceVar.ui.barrierIP.value;
+    // Check if the ip address for barrier is given
+    if(LaplaceVar.barrierIP == "") {
+        window.history.pushState('', '', getJoinUrl(LaplaceVar.roomID));
+    }
+    else {
+        window.history.pushState('', '', getJoinUrl(LaplaceVar.roomID,LaplaceVar.barrierIP));
+    }
 
 
     print("Logs:");
