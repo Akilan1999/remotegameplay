@@ -145,11 +145,12 @@ func GetHttp() *http.ServeMux {
 
         ip, ok := request.URL.Query()["barrierip"]
 
-        if ok && ip[0] != "" {
+        fmt.Println(ip[0])
+
+        if ip[0] != "" {
             //Declaring struct
             var barriersession Barrier
             barriersession.IPAddress = ip[0]
-            fmt.Println(ip[0])
             room.BarrierSession = &barriersession
             // Creates a barrier session
             err := room.BarrierSession.CreateBarrierSession()
