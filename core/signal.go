@@ -147,7 +147,7 @@ func GetHttp() *http.ServeMux {
 
         fmt.Println(ip[0])
 
-        if ip[0] != "" {
+        if ok && ip[0] != "" {
             //Declaring struct
             var barriersession Barrier
             barriersession.IPAddress = ip[0]
