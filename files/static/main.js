@@ -184,7 +184,7 @@ function initUI() {
         e.preventDefault();
         LaplaceVar.roomID = LaplaceVar.ui.inputRoomID.value;
         LaplaceVar.barrierIP = LaplaceVar.ui.barrierIP.value;
-        
+
         urlParams = new URLSearchParams(window.location.search);
         LaplaceVar.barrierIP = urlParams.get('barrierip')
 
@@ -241,7 +241,7 @@ function initUI() {
     const queryString = window.location.search;
 
 // Getting url parameters from the URL
-    const urlParams = new URLSearchParams(queryString);
+    let urlParams = new URLSearchParams(queryString);
 
     // Running headless mode
     if(urlParams.get('mode') == "headless") {
