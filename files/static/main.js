@@ -185,8 +185,7 @@ function initUI() {
         LaplaceVar.roomID = LaplaceVar.ui.inputRoomID.value;
         LaplaceVar.barrierIP = LaplaceVar.ui.barrierIP.value;
 
-        urlParams = new URLSearchParams(window.location.search);
-        LaplaceVar.barrierIP = urlParams.get('barrierip')
+        urlParams = new URLSearchParams(window.location.search)
 
         // Check if the ip address for barrier is given
         if(LaplaceVar.barrierIP == "") {
