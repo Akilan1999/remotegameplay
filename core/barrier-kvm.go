@@ -5,84 +5,84 @@
 package core
 
 import (
-	"github.com/Akilan1999/remotegameplay/config"
-	"os/exec"
+    "github.com/Akilan1999/remotegameplay/config"
+    "os/exec"
 )
 
 // Barrier It's preferred that the IP address used is a IPV6 address
 type Barrier struct {
-	NodeName  string
-	IPAddress string
-	Mode      string
-	Process   *exec.Cmd
+    NodeName  string
+    IPAddress string
+    Mode      string
+    Process   *exec.Cmd
 }
 
 // CreateBarrierSession Command to run "barrier.barrierc --debug INFO -f 192.168.0.175"
 func (b *Barrier) CreateBarrierSession() error {
-	//Checks if barrier client exists
+    //Checks if barrier client exists
 
-	if err := DetectBarrier(); err != nil {
-		return err
-	}
+    if err := DetectBarrier(); err != nil {
+        return err
+    }
 
-	//Get username from config file
-	configResp, err := config.ConfigInit()
-	if err != nil {
-		return err
-	}
+    //Get username from config file
+    configResp, err := config.ConfigInit()
+    if err != nil {
+        return err
+    }
 
-	cmd := exec.Command("sudo", "-u", configResp.SystemUsername, "barrierc", "-f", "--debug", "DEBUG", "--log", "/tmp/barrier.log", b.IPAddress)
+    cmd := exec.Command("sudo", "-u", configResp.SystemUsername, "barrierc", "-f", "--disable-crypto", "--debug", "DEBUG", "--log", "/tmp/barrier.log", b.IPAddress)
 
-	// USE THE FOLLOWING TO DEBUG
-	//cmdReader, err := cmd.StdoutPipe()
-	//if err != nil {
-	//	fmt.Fprintln(os.Stderr, "Error creating StdoutPipe for Cmd", err)
-	//	return
-	//}
-	//
-	//// the following is used to print output of the command
-	//// as it makes progress...
-	//scanner := bufio.NewScanner(cmdReader)
-	//go func() {
-	//	for scanner.Scan() {
-	//		fmt.Printf("%s\n", scanner.Text())
-	//		//
-	//		// TODO:
-	//		// send output to server
-	//	}
-	//}()
-	//
-	//if err := cmd.Start(); err != nil {
-	//	return err
-	//}
+    // USE THE FOLLOWING TO DEBUG
+    //cmdReader, err := cmd.StdoutPipe()
+    //if err != nil {
+    //	fmt.Fprintln(os.Stderr, "Error creating StdoutPipe for Cmd", err)
+    //	return
+    //}
+    //
+    //// the following is used to print output of the command
+    //// as it makes progress...
+    //scanner := bufio.NewScanner(cmdReader)
+    //go func() {
+    //	for scanner.Scan() {
+    //		fmt.Printf("%s\n", scanner.Text())
+    //		//
+    //		// TODO:
+    //		// send output to server
+    //	}
+    //}()
+    //
+    //if err := cmd.Start(); err != nil {
+    //	return err
+    //}
 
-	if err := cmd.Start(); err != nil {
-		return err
-	}
+    if err := cmd.Start(); err != nil {
+        return err
+    }
 
-	println(cmd.Path)
+    println(cmd.Path)
 
-	// Saves the state of the command in the struct
-	b.Process = cmd
-	return nil
+    // Saves the state of the command in the struct
+    b.Process = cmd
+    return nil
 }
 
 // DeleteBarrierSession Deletes barrier client session running
 func (b *Barrier) DeleteBarrierSession() error {
-	// Halts the process
-	cmd := exec.Command("pkill", "barrierc")
-	if err := cmd.Run(); err != nil {
-		return err
-	}
+    // Halts the process
+    cmd := exec.Command("pkill", "barrierc")
+    if err := cmd.Run(); err != nil {
+        return err
+    }
 
-	return nil
+    return nil
 }
 
 // DetectBarrier This function ensures that the server has barrier client installed
 func DetectBarrier() error {
-	_, err := exec.LookPath("barrierc")
-	if err != nil {
-		return err
-	}
-	return nil
+    _, err := exec.LookPath("barrierc")
+    if err != nil {
+        return err
+    }
+    return nil
 }
