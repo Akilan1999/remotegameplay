@@ -184,8 +184,6 @@ function initUI() {
         e.preventDefault();
         LaplaceVar.roomID = LaplaceVar.ui.inputRoomID.value;
         LaplaceVar.barrierIP = LaplaceVar.ui.barrierIP.value;
-        // check if the following action is executed
-        console.log("here")
         // Check if the ip address for barrier is given
         if(LaplaceVar.barrierIP == "") {
             window.history.pushState('', '', getJoinUrl(LaplaceVar.roomID));
@@ -625,7 +623,14 @@ async function doJoin(roomID,BarrierIP = "") {
 
 function routeByUrl() {
     const u = new URL(window.location);
+
     const paramId = u.searchParams.get('id');
+    const barrierip = u.searchParams.get('barrier_ip');
+
+    if (barrierip && barrierip.length < 0 && paramId && paramId.length > 0) {
+        return doJoin(paramId,barrierip);
+    }
+
     if (paramId && paramId.length > 0) {
         return doJoin(paramId);
     }

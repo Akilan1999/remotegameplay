@@ -145,6 +145,8 @@ func GetHttp() *http.ServeMux {
 
         ip, ok := request.URL.Query()["barrierip"]
 
+        fmt.Println(ip)
+
         if ok && ip[0] != "" {
             //Declaring struct
             var barriersession Barrier
