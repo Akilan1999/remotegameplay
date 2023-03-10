@@ -625,9 +625,9 @@ function routeByUrl() {
     const u = new URL(window.location);
 
     const paramId = u.searchParams.get('id');
-    const barrierip = u.searchParams.get('barrier_ip');
+    const barrierip = u.searchParams.get('barrierip');
 
-    if (barrierip && barrierip.length < 0 && paramId && paramId.length > 0) {
+    if (barrierip && barrierip.length > 0 && paramId && paramId.length > 0) {
         return doJoin(paramId,barrierip);
     }
 
