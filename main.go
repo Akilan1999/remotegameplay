@@ -51,12 +51,13 @@ func main() {
 
     // if barrier flag is provided
     if *barrier {
-        natBarrier, err := core.EscapeNATBarrier()
-        if err != nil {
-            fmt.Println(err)
-            return
-        }
-        Config.NATEscapeBarrierPort = natBarrier
+        //natBarrier, err := core.EscapeNATBarrier()
+        //if err != nil {
+        //    fmt.Println(err)
+        //    return
+        //}
+        //Config.NATEscapeBarrierPort = natBarrier
+        Config.NATEscapeBarrierPort = "0"
         err = Config.WriteConfig()
         if err != nil {
             return
@@ -114,14 +115,14 @@ func main() {
     }
 
     // running implementation to escape NAT
-    GameServerPort, ScreenSharePort, err := core.EscapeNAT(Config.InternalScreenSharePort, Config.InternalGameServerPort)
-    if err != nil {
-        log.Fatalln(err)
-    }
+    //GameServerPort, ScreenSharePort, err := core.EscapeNAT(Config.InternalScreenSharePort, Config.InternalGameServerPort)
+    //if err != nil {
+    //    log.Fatalln(err)
+    //}
 
-    Config.IPAddress = "64.227.168.102"
-    Config.NATEscapeGameServerPort = GameServerPort
-    Config.NATEscapeScreenSharePort = ScreenSharePort
+    //Config.IPAddress = "64.227.168.102"
+    //Config.NATEscapeGameServerPort = GameServerPort
+    //Config.NATEscapeScreenSharePort = ScreenSharePort
     Config.NATEscapeBarrierPort = ""
 
     err = Config.WriteConfig()
