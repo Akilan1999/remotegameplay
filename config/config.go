@@ -32,6 +32,7 @@ type Config struct {
 	ScreenName               string
 	InternalGameServerPort   string
 	InternalScreenSharePort  string
+	DomainName               string
 }
 
 // Exists reports whether the named file or directory exists.
@@ -77,8 +78,9 @@ func SetDefaults() error {
 	c.Rate = 0.0
 	c.BackendURL = "https://xplane-webrtc.akilan.io"
 	c.ScreenName = "Entire screen"
-	c.InternalGameServerPort = "8088"
+	c.InternalGameServerPort = "8098"
 	c.InternalScreenSharePort = "8888"
+	c.DomainName = "xplane-webrtc.akilan.io"
 
 	file, _ := json.MarshalIndent(c, "", " ")
 
