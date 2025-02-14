@@ -160,7 +160,11 @@ func main() {
 
 	// If both server selected set the remote Gameserver to local now.
 	if *BothServers {
-		Config.BackendURL = Config.NATEscapeGameServerPort + "/"
+		if Config.DomainName == "" {
+			Config.BackendURL = "http://" + Config.NATEscapeGameServerPort + "/"
+		} else {
+			Config.BackendURL = "https://" + Config.DomainName + "/"
+		}
 		err = Config.WriteConfig()
 		if err != nil {
 			fmt.Println(err)
