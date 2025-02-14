@@ -12,7 +12,7 @@ func EscapeNAT(ScreenPort, GameplayServerPort string) (ServerPort string, Screen
     // init config to get domain name
     Config, err := config.ConfigInit()
     if err != nil {
-        return "", err
+        return "", "", err
     }
 
     port, err := abstractions.MapPort(ScreenPort, Config.DomainName, "")
