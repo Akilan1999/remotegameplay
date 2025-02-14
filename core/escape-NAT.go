@@ -9,7 +9,13 @@ import (
 // - 1 port for server
 // - 2 port for barrierKVM
 func EscapeNAT(ScreenPort, GameplayServerPort string) (ServerPort string, ScreenSharePort string, err error) {
-    port, err := abstractions.MapPort(ScreenPort, "", "")
+    // init config to get domain name
+    Config, err := config.ConfigInit()
+    if err != nil {
+        return "", err
+    }
+
+    port, err := abstractions.MapPort(ScreenPort, Config.DomainName, "")
     if err != nil {
         return "", "", err
     }
@@ -27,13 +33,8 @@ func EscapeNAT(ScreenPort, GameplayServerPort string) (ServerPort string, Screen
 }
 
 func EscapeNATBarrier() (barrierKVMport string, err error) {
-    // init config to get domain name
-    Config, err := config.ConfigInit()
-    if err != nil {
-        return "", err
-    }
 
-    port, err := abstractions.MapPort("24798", Config.DomainName, "")
+    port, err := abstractions.MapPort("24798", "", "")
     if err != nil {
         return "", err
     }
