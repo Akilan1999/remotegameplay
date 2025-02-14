@@ -50,7 +50,7 @@ func BroadcastServerToBackend() error {
 
 	// Game session url
 	//+ file.ID
-	gameSession.Link = respIpv4orIPv6 + ":" + config.NATEscapeScreenSharePort + "/?id=" + room.ID
+	gameSession.Link = respIpv4orIPv6 + config.NATEscapeScreenSharePort + "/?id=" + room.ID
 	// Rate for the game session
 	gameSession.Rate = config.Rate
 	// Server specs to struct GameSession
